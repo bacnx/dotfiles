@@ -11,12 +11,12 @@ local fb_actions = require "telescope".extensions.file_browser.actions
 
 telescope.setup {
   defaults = {
-    file_ignore_patterns = { "node_modules", ".git", ".vscode" },
     mappings = {
       n = {
         ["q"] = actions.close
       },
     },
+    file_ignore_patterns = { "node_modules", ".git" },
   },
   extensions = {
     file_browser = {

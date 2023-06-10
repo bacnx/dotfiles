@@ -19,7 +19,7 @@ end
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
-local on_attach = function(_, bufnr)
+local on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
 
   --Enable completion triggered by <c-x><c-o>
@@ -38,23 +38,23 @@ end
 
 protocol.CompletionItemKind = {
   '', -- Text
-  '', -- Method
-  '', -- Function
-  '', -- Constructor
+  '', -- Method
+  '󰊕', -- Function
+  '󰊕', -- Constructor
   '', -- Field
   '', -- Variable
   '', -- Class
-  'ﰮ', -- Interface
-  '', -- Module
+  '', -- Interface
+  '󰏗', -- Module
   '', -- Property
   '', -- Unit
-  '', -- Value
+  '󰎠', -- Value
   '', -- Enum
   '', -- Keyword
-  '﬌', -- Snippet
+  '', -- Snippet
   '', -- Color
   '', -- File
-  '', -- Reference
+  '󰆑', -- Reference
   '', -- Folder
   '', -- EnumMember
   '', -- Constant
@@ -74,7 +74,7 @@ nvim_lsp.flow.setup {
 
 nvim_lsp.tsserver.setup {
   on_attach = on_attach,
-  filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
+  filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
   cmd = { "typescript-language-server", "--stdio" },
   capabilities = capabilities
 }
@@ -121,23 +121,6 @@ nvim_lsp.astro.setup {
   capabilities = capabilities
 }
 
-nvim_lsp.eslint.setup({
-  on_attach = function(_, bufnr)
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      buffer = bufnr,
-      command = "EslintFixAll",
-    })
-  end,
-  filetypes = { "javascript", "javascriptreact", "javascript.jsx" },
-  cmd = { "vscode-eslint-language-server", "--stdio" },
-  capabilities = capabilities,
-})
-
-nvim_lsp.emmet_ls.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
-})
-
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
   underline = true,
@@ -148,7 +131,7 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 )
 
 -- Diagnostic symbols in the sign column (gutter)
-local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+local signs = { Error = " ", Warn = " ", Hint = "󰌶 ", Info = " " }
 for type, icon in pairs(signs) do
   local hl = "DiagnosticSign" .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })

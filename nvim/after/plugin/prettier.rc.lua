@@ -15,7 +15,6 @@ prettier.setup({
     "scss",
     "typescript",
     "typescriptreact",
-    "yaml",
   },
   ["null-ls"] = {
     condition = function()
@@ -37,7 +36,6 @@ prettier.setup({
     embedded_language_formatting = "auto",
     end_of_line = "lf",
     html_whitespace_sensitivity = "css",
-    -- jsx_bracket_same_line = false,
     jsx_single_quote = true,
     print_width = 80,
     prose_wrap = "preserve",
