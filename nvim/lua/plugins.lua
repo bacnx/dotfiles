@@ -42,6 +42,7 @@ return packer.startup(function(use)
   use 'nvim-telescope/telescope.nvim'
   use 'nvim-telescope/telescope-file-browser.nvim'
   use 'akinsho/bufferline.nvim'
+  use 'CRAG666/code_runner.nvim'
 
   use 'numToStr/Comment.nvim'
   use 'JoosepAlviste/nvim-ts-context-commentstring'
