@@ -7,7 +7,8 @@ runner.setup({
       "cd $dir &&",
       "g++ $fileName &&",
       "$dir/a.out"
-    }
+    },
+    go = { "go run" }
   }
 })
 
