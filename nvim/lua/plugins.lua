@@ -9,11 +9,11 @@ vim.cmd [[packadd packer.nvim]]
 return packer.startup(function(use)
   use 'wbthomason/packer.nvim'
 
-  use 'onsails/lspkind-nvim' -- VScode-like pictograms
-  use 'hrsh7th/cmp-buffer' -- nvim-cmp source for buffer words
-  use 'hrsh7th/cmp-nvim-lsp' -- nvim-cmp source for neovim's built-in LSP
-  use 'hrsh7th/nvim-cmp' -- Completion
-  use 'neovim/nvim-lspconfig' -- LSP
+  use 'onsails/lspkind-nvim'            -- VScode-like pictograms
+  use 'hrsh7th/cmp-buffer'              -- nvim-cmp source for buffer words
+  use 'hrsh7th/cmp-nvim-lsp'            -- nvim-cmp source for neovim's built-in LSP
+  use 'hrsh7th/nvim-cmp'                -- Completion
+  use 'neovim/nvim-lspconfig'           -- LSP
   use 'jose-elias-alvarez/null-ls.nvim' -- Use Neovim as a language server to inject LSP diagnostics, code actions, and more via Lua
   use 'MunifTanjim/eslint.nvim'
   use 'williamboman/mason.nvim'
@@ -47,7 +47,7 @@ return packer.startup(function(use)
 
   use 'numToStr/Comment.nvim'
   use 'JoosepAlviste/nvim-ts-context-commentstring'
-  
+
   use 'lewis6991/gitsigns.nvim'
   use 'dinhhuy258/git.nvim'
 end)
