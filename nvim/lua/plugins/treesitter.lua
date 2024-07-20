@@ -19,6 +19,7 @@ return {
                 'cpp',
                 'typescript',
                 'tsx',
+                'go',
             },
             auto_install = true,
             autotag = { enable = true },

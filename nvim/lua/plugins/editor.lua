@@ -44,6 +44,14 @@ return {
                 end,
                 desc = 'Search for a string in your current working directory and get result live as you type'
             },
+            {
+                ';;',
+                function()
+                    local builtin = require('telescope.builtin')
+                    builtin.resume()
+                end,
+                desc = 'Resume the previous telescope picker'
+            }
 		},
 	},
     {
@@ -58,6 +66,26 @@ return {
                     require('lualine').refresh()
                 end,
             },
+        },
+    },
+    {
+        'lewis6991/gitsigns.nvim',
+        opts = {},
+    },
+    {
+        'kdheepak/lazygit.nvim',
+        cmd = {
+            'LazyGit',
+            'LazyGitConfig',
+            'LazyGitCurrentFile',
+            'LazyGitFilter',
+            'LazyGitFilterCurrentFile',
+        },
+        dependencies = {
+            'nvim-lua/plenary.nvim',
+        },
+        keys = {
+            { '<leader>gg', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
         },
     },
 }

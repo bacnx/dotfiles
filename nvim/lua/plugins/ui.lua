@@ -1,12 +1,15 @@
 return {
     -- {
     --     'akinsho/bufferline.nvim',
-    --     version = "*",
-    --     dependencies = 'nvim-tree/nvim-web-devicons',
-    --     keys = {
-    --         { '<Tab>', '<Cmd>BufferLineCycleNext<CR>', desc = 'Next tab' },
-    --         { '<S-Tab>', '<Cmd>BufferLineCyclePrev<CR>', desc = 'Prev tab' },
+    --     event = 'VeryLazy',
+    --     version = 'v4.5.0',
+    --     dependencies = {
+    --         'nvim-tree/nvim-web-devicons',
     --     },
+    --     -- keys = {
+    --     --     { '<Tab>', '<Cmd>BufferLineCycleNext<CR>', desc = 'Next tab' },
+    --     --     { '<S-Tab>', '<Cmd>BufferLineCyclePrev<CR>', desc = 'Prev tab' },
+    --     -- },
     --     opts = {},
     -- },
     {
@@ -14,7 +17,8 @@ return {
         dependencies = 'nvim-tree/nvim-web-devicons',
         opts = {
             options = {
-                theme = 'ayu_dark',
+                -- theme = 'codedark',
+                theme = 'onedark',
                 section_separators = '',
                 component_separators = '',
             },

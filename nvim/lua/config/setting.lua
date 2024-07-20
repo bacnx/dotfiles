@@ -6,6 +6,6 @@ vim.opt.expandtab = true
 
 vim.o.clipboard = 'unnamedplus'
 vim.opt.number = true
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
 vim.opt.syntax = "on"
 vim.opt.termguicolors = true

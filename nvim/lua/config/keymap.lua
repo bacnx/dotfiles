@@ -14,18 +14,7 @@ keymap.set("n", "te", ":tabedit <Return>")
 keymap.set("n", "<Tab>", ":tabnext <Return>", opts)
 keymap.set("n", "<S-Tab>", ":tabprev <Return>", opts)
 -- Close tab
-keymap.set("n", "tq", function()
-  local total_tabs = vim.fn.tabpagenr("$")
-  local current_tab = vim.fn.tabpagenr()
-  local total_windows = vim.fn.tabpagewinnr(vim.fn.tabpagenr(), "$")
-
-  if current_tab == 1 or current_tab == total_tabs or total_windows > 1 then
-    vim.api.nvim_command("quit")
-  else
-    vim.api.nvim_command("quit")
-    vim.api.nvim_command("tabprev")
-  end
-end, opts)
+keymap.set("n", "tq", ":quit <Return>", opts)
 -- Close all tab
 keymap.set("n", "<leader>qq", ":qa <Return>")
 -- Close all tabs except the current tab
