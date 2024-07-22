@@ -18,7 +18,8 @@ return {
         opts = {
             options = {
                 -- theme = 'codedark',
-                theme = 'onedark',
+                -- theme = 'onedark',
+                theme = 'auto',
                 section_separators = '',
                 component_separators = '',
             },

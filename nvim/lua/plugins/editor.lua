@@ -53,6 +53,19 @@ return {
                 desc = 'Resume the previous telescope picker'
             }
 		},
+        opts = {
+            defaults = {
+                wrap_results = true,
+                layout_strategy = "horizontal",
+                layout_config = { prompt_position = "top" },
+                sorting_strategy = "ascending",
+                file_ignore_patterns = { "node_modules" },
+                winblend = 0,
+                mappings = {
+                    n = {},
+                },
+            },
+        },
 	},
     {
         'rmagatti/auto-session',

@@ -16,7 +16,6 @@ return {
         dependencies = 'williamboman/mason.nvim',
         opts = {
             ensure_installed = {
-                'tree-sitter-cli',
                 'gofumpt',
                 'goimports',
                 'golines',
@@ -31,6 +30,22 @@ return {
     },
     {
         'neovim/nvim-lspconfig',
+        keys = {
+            {
+                'gd',
+                function()
+                    require('telescope.builtin').lsp_definitions { jump_type = 'tab' }
+                end,
+                desc = 'Goto definition',
+            },
+            {
+                'gI',
+                function()
+                    require('telescope.builtin').lsp_implementations { jump_type = 'tab' }
+                end,
+                desc = 'Goto implementation',
+            },
+        },
         config = function(_, opts)
             local lspconfig = require('lspconfig')
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
