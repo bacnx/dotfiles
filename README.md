@@ -2,6 +2,9 @@
 
 ![screenshot](./images/screenshot.png)
 
+## Requirements
+- [Nerd Font (v3)](https://www.nerdfonts.com/)
+
 ## Install
 ```shell
 ./install.sh
