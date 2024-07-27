@@ -83,6 +83,7 @@ plugins=(
   git
   z
   vi-mode
+  tmux
   zsh-autosuggestions
   zsh-syntax-highlighting
   web-search
