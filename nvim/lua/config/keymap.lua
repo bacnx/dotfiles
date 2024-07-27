@@ -14,7 +14,7 @@ keymap.set("n", "te", ":tabedit <Return>")
 keymap.set("n", "<Tab>", ":tabnext <Return>", opts)
 keymap.set("n", "<S-Tab>", ":tabprev <Return>", opts)
 -- Close tab
-keymap.set("n", "tq", ":tabclose <Return>", opts)
+keymap.set("n", "tq", ":quit <Return>", opts)
 -- Close all tab
 keymap.set("n", "<leader>q", ":quitall <Return>")
 -- Close all tabs except the current tab

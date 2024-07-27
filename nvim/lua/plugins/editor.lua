@@ -101,4 +101,35 @@ return {
             { '<leader>gg', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
         },
     },
+    {
+        'christoomey/vim-tmux-navigator',
+        cmd = {
+            'TmuxNavigateLeft',
+            'TmuxNavigateDown',
+            'TmuxNavigateUp',
+            'TmuxNavigateRight',
+            'TmuxNavigatePrevious',
+        },
+        keys = {
+            { '<c-h>', '<cmd><C-U>TmuxnavigateLeft<cr>'},
+            { '<c-j>', '<cmd><C-U>TmuxnavigateDown<cr>'},
+            { '<c-k>', '<cmd><C-U>TmuxnavigateUp<cr>'},
+            { '<c-l>', '<cmd><C-U>TmuxnavigateRight<cr>'},
+            { '<c-\\>', '<cmd><C-U>TmuxnavigatePrevious<cr>'},
+        },
+    },
+    {
+        'vim-test/vim-test',
+        dependencies = 'preservim/vimux',
+        keys = {
+            { '<leader>t', ':TestNearest<CR>' },
+            { '<leader>T', ':TestFile<CR>' },
+            { '<leader>a', ':TestSuite<CR>' },
+            { '<leader>l', ':TestLast<CR>' },
+            { '<leader>g', ':TestVisit<CR>', },
+        },
+        config = function()
+            vim.cmd 'let test#strategy = "vimux"'
+        end,
+    },
 }
