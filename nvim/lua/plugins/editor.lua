@@ -98,7 +98,7 @@ return {
             'nvim-lua/plenary.nvim',
         },
         keys = {
-            { '<leader>gg', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
+            { '<leader>g', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
         },
     },
     {
@@ -122,14 +122,23 @@ return {
         'vim-test/vim-test',
         dependencies = 'preservim/vimux',
         keys = {
-            { '<leader>t', ':TestNearest<CR>' },
-            { '<leader>T', ':TestFile<CR>' },
-            { '<leader>a', ':TestSuite<CR>' },
-            { '<leader>l', ':TestLast<CR>' },
-            { '<leader>g', ':TestVisit<CR>', },
+            { '<leader>tt', ':TestNearest<CR>' },
+            { '<leader>tf', ':TestFile<CR>' },
+            { '<leader>ta', ':TestSuite<CR>' },
+            { '<leader>tl', ':TestLast<CR>' },
+            { '<leader>tg', ':TestVisit<CR>', },
         },
         config = function()
             vim.cmd 'let test#strategy = "vimux"'
         end,
+    },
+    {
+        'CRAG666/code_runner.nvim',
+        keys = {
+            { '<leader>r', ':RunCode<CR>', desc = 'Runs based on file type' },
+        },
+        opts = {
+            hot_reload = false,
+        },
     },
 }
