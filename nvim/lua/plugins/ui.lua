@@ -1,29 +1,41 @@
 return {
-    -- {
-    --     'akinsho/bufferline.nvim',
-    --     event = 'VeryLazy',
-    --     version = 'v4.5.0',
-    --     dependencies = {
-    --         'nvim-tree/nvim-web-devicons',
-    --     },
-    --     -- keys = {
-    --     --     { '<Tab>', '<Cmd>BufferLineCycleNext<CR>', desc = 'Next tab' },
-    --     --     { '<S-Tab>', '<Cmd>BufferLineCyclePrev<CR>', desc = 'Prev tab' },
-    --     -- },
-    --     opts = {},
-    -- },
     {
         'nvim-lualine/lualine.nvim',
         dependencies = 'nvim-tree/nvim-web-devicons',
-        opts = {
-            options = {
-                -- theme = 'codedark',
-                -- theme = 'onedark',
-                theme = 'auto',
-                section_separators = '',
-                component_separators = '',
-            },
-        },
+        config = function()
+            -- hide default tab bar and use lualine tabs instead
+            vim.opt.showtabline = 0
+
+            require('lualine').setup({
+                options = {
+                    theme = 'auto',
+                    section_separators = '',
+                    component_separators = '',
+                },
+                sections = {
+                    lualine_a = {
+                        { 'windows', use_mode_colors = true },
+                    },
+                    lualine_b = {
+                        'branch',
+                        { 'diff', padding = { left = 0, right = 1 } },
+                    },
+                    lualine_c = {
+                        { 'tabs', use_mode_colors = true, show_modified_status = false },
+                    },
+
+                    lualine_x = {
+                        {
+                            function() return require("noice").api.status.command.get() end,
+                            cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
+                        },
+                        'diagnostics',
+                    },
+                    lualine_y = { 'progress' },
+                    lualine_z = { 'location' },
+                },
+            })
+        end,
     },
     {
         'folke/noice.nvim',
@@ -32,6 +44,9 @@ return {
             'MunifTanjim/nui.nvim',
             'rcarriga/nvim-notify',
             'hrsh7th/nvim-cmp',
+        },
+        keys = {
+            { '<leader>nd', ':NoiceDismiss <CR>' },
         },
         opts = {
             lsp = {
