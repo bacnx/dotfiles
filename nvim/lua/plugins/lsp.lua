@@ -16,13 +16,16 @@ return {
         dependencies = 'williamboman/mason.nvim',
         opts = {
             ensure_installed = {
-                'gofumpt',
-                'goimports',
-                'golines',
+                -- lsp
                 'lua-language-server',
                 'clangd',
                 'typescript-language-server',
                 'gopls',
+
+                -- formatter
+                'gofumpt',
+                'goimports',
+                'golines',
             },
             auto_update = true,
             run_on_start = true,
@@ -92,7 +95,6 @@ return {
     },
     {
         'jose-elias-alvarez/null-ls.nvim',
-        ft = 'go',
         config = function()
             local null_ls = require('null-ls')
             local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
@@ -102,6 +104,7 @@ return {
                     null_ls.builtins.formatting.gofumpt,
                     null_ls.builtins.formatting.goimports,
                     null_ls.builtins.formatting.golines,
+                    null_ls.builtins.formatting.prettier,
                 },
                 on_attach = function(client, bufnr)
                     if client.supports_method('textDocument/formatting') then
