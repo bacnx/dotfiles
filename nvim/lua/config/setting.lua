@@ -13,3 +13,4 @@ vim.opt.syntax = 'on'
 vim.opt.wrap = false
 vim.opt.termguicolors = true
 vim.opt.laststatus = 3
+vim.opt.showmode = false
