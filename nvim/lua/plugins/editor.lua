@@ -1,20 +1,20 @@
 return {
-	{
-		'nvim-telescope/telescope.nvim', tag = '0.1.8',
-		lazy = false,
-		dependencies = {
-			'nvim-lua/plenary.nvim',
+    {
+        'nvim-telescope/telescope.nvim', tag = '0.1.8',
+        lazy = false,
+        dependencies = {
+            'nvim-lua/plenary.nvim',
             'nvim-telescope/telescope-file-browser.nvim',
-		},
-		keys = {
-			{
-				';f',
-				function()
-					local builtin = require('telescope.builtin')
-					builtin.find_files()
-				end,
-				desc = 'List file in current working directory',
-			},
+        },
+        keys = {
+            {
+                ';f',
+                function()
+                    local builtin = require('telescope.builtin')
+                    builtin.find_files()
+                end,
+                desc = 'List file in current working directory',
+            },
             {
                 'sf',
                 function()
@@ -52,7 +52,7 @@ return {
                 end,
                 desc = 'Resume the previous telescope picker'
             }
-		},
+        },
         opts = {
             defaults = {
                 wrap_results = true,
@@ -66,7 +66,7 @@ return {
                 },
             },
         },
-	},
+    },
     {
         'rmagatti/auto-session',
         dependencies = 'nvim-telescope/telescope.nvim',
@@ -98,7 +98,7 @@ return {
             'nvim-lua/plenary.nvim',
         },
         keys = {
-            { '<leader>g', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
+            { '<leader>gg', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
         },
     },
     {

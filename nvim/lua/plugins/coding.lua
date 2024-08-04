@@ -27,11 +27,10 @@ return {
                     end,
                 },
                 mapping = cmp.mapping.preset.insert({
-                    -- WARN: need fix scroll_docs
                     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
                     ['<C-u>'] = cmp.mapping.scroll_docs(4),
-                    ['<C-j>'] = cmp.mapping.scroll_docs(-1),
-                    ['<C-k>'] = cmp.mapping.scroll_docs(1),
+                    ['<C-k>'] = cmp.mapping.select_prev_item(),
+                    ['<C-j>'] = cmp.mapping.select_next_item(),
                     ['<C-Space>'] = cmp.mapping.complete(),
                     ['<C-e>'] = cmp.mapping.abort(),
                     ['<CR>'] = cmp.mapping.confirm({ select = true }),
@@ -44,5 +43,8 @@ return {
                 })
             }
         end,
+    },
+    {
+        'tpope/vim-sleuth',
     },
 }
