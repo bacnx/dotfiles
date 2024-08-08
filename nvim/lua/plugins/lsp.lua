@@ -37,14 +37,14 @@ return {
             {
                 'gd',
                 function()
-                    require('telescope.builtin').lsp_definitions { jump_type = 'tab' }
+                    require('telescope.builtin').lsp_definitions()
                 end,
                 desc = 'Goto definition',
             },
             {
                 'gI',
                 function()
-                    require('telescope.builtin').lsp_implementations { jump_type = 'tab' }
+                    require('telescope.builtin').lsp_implementations()
                 end,
                 desc = 'Goto implementation',
             },

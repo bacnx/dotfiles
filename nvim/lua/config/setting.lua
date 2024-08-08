@@ -14,3 +14,4 @@ vim.opt.wrap = false
 vim.opt.termguicolors = true
 vim.opt.laststatus = 3
 vim.opt.showmode = false
+vim.opt.scrolloff = 3
