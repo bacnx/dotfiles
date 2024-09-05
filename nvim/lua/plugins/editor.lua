@@ -5,6 +5,7 @@ return {
         dependencies = {
             'nvim-lua/plenary.nvim',
             'nvim-telescope/telescope-file-browser.nvim',
+            'smartpde/telescope-recent-files',
         },
         keys = {
             {
@@ -51,7 +52,18 @@ return {
                     builtin.resume()
                 end,
                 desc = 'Resume the previous telescope picker'
-            }
+            },
+            {
+                '<Leader><Leader>',
+                function()
+                    local telescope = require('telescope')
+                    telescope.extensions.recent_files.pick({
+                        only_cwd = true,
+                        initial_mode = 'normal',
+                    })
+                end,
+                desc = "Open recent files",
+            },
         },
         opts = {
             defaults = {
@@ -134,11 +146,20 @@ return {
     },
     {
         'CRAG666/code_runner.nvim',
+        dependencies = 'preservim/vimux',
         keys = {
             { '<leader>r', ':RunCode<CR>', desc = 'Runs based on file type' },
         },
         opts = {
             hot_reload = false,
+            mode = 'vimux',
+            filetype = {
+                typescript = {
+                    'cd $dir &&',
+                    'tsc $fileName &&',
+                    'node $fileNameWithoutExt.js',
+                },
+            },
         },
     },
 }

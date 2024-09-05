@@ -70,4 +70,10 @@ return {
             })
         end,
     },
+    {
+        'MeanderingProgrammer/render-markdown.nvim',
+        file_types = { 'markdown' },
+        dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
+        opts = {},
+    },
 }

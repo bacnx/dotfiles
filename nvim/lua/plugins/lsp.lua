@@ -21,6 +21,7 @@ return {
                 'clangd',
                 'typescript-language-server',
                 'gopls',
+                'emmet-ls',
 
                 -- formatter
                 'gofumpt',
@@ -90,11 +91,14 @@ return {
                         },
                     },
                 },
+                cssls = {},
+                emmet_ls = {},
             },
         },
     },
     {
         'nvimtools/none-ls.nvim',
+        ft = { 'go', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
         config = function()
             local null_ls = require('null-ls')
             local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
