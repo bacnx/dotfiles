@@ -143,8 +143,8 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # #eza
 if [ -x "$(command -v eza)" ]; then
     alias ls="eza --icons --group-directories-first"
-    alias ll="eza -lh --icons --group-directories-first"
-    alias la="eza -lah --git --icons --group-directories-first"
+    alias ll="eza -lhg --git --icons --group-directories-first"
+    alias la="eza -lahg --git --icons --group-directories-first"
 fi
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
