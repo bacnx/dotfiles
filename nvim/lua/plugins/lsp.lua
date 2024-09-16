@@ -75,7 +75,7 @@ return {
                     },
                 },
                 clangd = {},
-                tsserver = {},
+                ts_ls = {},
                 gopls = {
                     cmd = { 'gopls' },
                     filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },

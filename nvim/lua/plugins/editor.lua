@@ -162,4 +162,13 @@ return {
             },
         },
     },
+    {
+        'nvim-focus/focus.nvim',
+        version = '*',
+        opts = {
+            ui = {
+                cursorline = false,
+            },
+        },
+    },
 }
