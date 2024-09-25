@@ -32,3 +32,9 @@
 ### Terminal
 
 - [eza](https://github.com/eza-community/eza/blob/main/INSTALL.md)
+
+### [Commitizen](https://github.com/commitizen/cz-cli)
+```shell
+npm install commitizen -g
+npm install -g cz-conventional-changelog
+```
