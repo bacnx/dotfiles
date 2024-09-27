@@ -96,6 +96,13 @@ return {
     {
         'lewis6991/gitsigns.nvim',
         opts = {},
+        keys = {
+            {
+                '<leader>gb',
+                '<CMD>Gitsigns blame_line<CR>',
+                desc = 'Git blame current line'
+            },
+        },
     },
     {
         'kdheepak/lazygit.nvim',
