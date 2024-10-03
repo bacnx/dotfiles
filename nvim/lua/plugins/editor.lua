@@ -1,6 +1,7 @@
 return {
     {
-        'nvim-telescope/telescope.nvim', tag = '0.1.8',
+        'nvim-telescope/telescope.nvim',
+        tag = '0.1.8',
         lazy = false,
         dependencies = {
             'nvim-lua/plenary.nvim',
@@ -21,21 +22,21 @@ return {
                 function()
                     local telescope = require('telescope')
                     local function telescope_buffer_dir()
-                        return vim.fn.expand("%:p:h")
+                        return vim.fn.expand('%:p:h')
                     end
 
                     telescope.extensions.file_browser.file_browser({
-                    path = "%:p:h",
-                    cwd = telescope_buffer_dir(),
-                    respect_gitignore = false,
-                    hidden = true,
-                    grouped = true,
-                    previewer = false,
-                    initial_mode = "normal",
-                    layout_config = { height = 40 },
-                  })
+                        path = '%:p:h',
+                        cwd = telescope_buffer_dir(),
+                        respect_gitignore = false,
+                        hidden = true,
+                        grouped = true,
+                        previewer = false,
+                        initial_mode = 'normal',
+                        layout_config = { height = 40 },
+                    })
                 end,
-                desc = "Open File browser with the path of the current buffer",
+                desc = 'Open File browser with the path of the current buffer',
             },
             {
                 ';r',
@@ -43,7 +44,7 @@ return {
                     local builtin = require('telescope.builtin')
                     builtin.live_grep()
                 end,
-                desc = 'Search for a string in your current working directory and get result live as you type'
+                desc = 'Search for a string in your current working directory and get result live as you type',
             },
             {
                 ';;',
@@ -51,7 +52,7 @@ return {
                     local builtin = require('telescope.builtin')
                     builtin.resume()
                 end,
-                desc = 'Resume the previous telescope picker'
+                desc = 'Resume the previous telescope picker',
             },
             {
                 '<Leader><Leader>',
@@ -62,16 +63,16 @@ return {
                         initial_mode = 'normal',
                     })
                 end,
-                desc = "Open recent files",
+                desc = 'Open recent files',
             },
         },
         opts = {
             defaults = {
                 wrap_results = true,
-                layout_strategy = "horizontal",
-                layout_config = { prompt_position = "top" },
-                sorting_strategy = "ascending",
-                file_ignore_patterns = { "node_modules" },
+                layout_strategy = 'horizontal',
+                layout_config = { prompt_position = 'top' },
+                sorting_strategy = 'ascending',
+                file_ignore_patterns = { 'node_modules' },
                 winblend = 0,
                 mappings = {
                     n = {},
@@ -123,11 +124,11 @@ return {
             'TmuxNavigatePrevious',
         },
         keys = {
-            { '<c-h>', '<cmd><C-U>TmuxnavigateLeft<cr>'},
-            { '<c-j>', '<cmd><C-U>TmuxnavigateDown<cr>'},
-            { '<c-k>', '<cmd><C-U>TmuxnavigateUp<cr>'},
-            { '<c-l>', '<cmd><C-U>TmuxnavigateRight<cr>'},
-            { '<c-\\>', '<cmd><C-U>TmuxnavigatePrevious<cr>'},
+            { '<c-h>', '<cmd><C-U>TmuxnavigateLeft<cr>' },
+            { '<c-j>', '<cmd><C-U>TmuxnavigateDown<cr>' },
+            { '<c-k>', '<cmd><C-U>TmuxnavigateUp<cr>' },
+            { '<c-l>', '<cmd><C-U>TmuxnavigateRight<cr>' },
+            { '<c-\\>', '<cmd><C-U>TmuxnavigatePrevious<cr>' },
         },
     },
     {
@@ -138,10 +139,10 @@ return {
             { '<leader>tf', ':TestFile<CR>' },
             { '<leader>ta', ':TestSuite<CR>' },
             { '<leader>tl', ':TestLast<CR>' },
-            { '<leader>tg', ':TestVisit<CR>', },
+            { '<leader>tg', ':TestVisit<CR>' },
         },
         config = function()
-            vim.cmd 'let test#strategy = "vimux"'
+            vim.cmd('let test#strategy = "vimux"')
         end,
     },
     {
@@ -162,13 +163,13 @@ return {
             },
         },
     },
-    {
-        'nvim-focus/focus.nvim',
-        version = '*',
-        opts = {
-            ui = {
-                cursorline = false,
-            },
-        },
-    },
+    -- {
+    --     'nvim-focus/focus.nvim',
+    --     version = '*',
+    --     opts = {
+    --         ui = {
+    --             cursorline = false,
+    --         },
+    --     },
+    -- },
 }

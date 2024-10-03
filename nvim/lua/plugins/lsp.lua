@@ -22,11 +22,7 @@ return {
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
             for lsp, config in pairs(opts.servers) do
-                local lsp_config = vim.tbl_deep_extend(
-                    'force',
-                    { capabilities = capabilities },
-                    config
-                )
+                local lsp_config = vim.tbl_deep_extend('force', { capabilities = capabilities }, config)
                 lspconfig[lsp].setup(lsp_config)
             end
         end,
@@ -36,7 +32,7 @@ return {
                     settings = {
                         Lua = {
                             diagnostics = {
-                                globals = {'vim'},
+                                globals = { 'vim' },
                             },
                         },
                     },
@@ -60,6 +56,21 @@ return {
                 },
                 cssls = {},
                 emmet_ls = {},
+            },
+        },
+    },
+    {
+        'nvimdev/lspsaga.nvim',
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter',
+            'nvim-tree/nvim-web-devicons',
+        },
+        opts = {
+            code_action = {
+                extend_gitsigns = true,
+            },
+            ui = {
+                code_action = '',
             },
         },
     },

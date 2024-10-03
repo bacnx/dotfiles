@@ -40,11 +40,9 @@ return {
                     { name = 'buffer' },
                 }, {
                     { name = 'buffer' },
-                })
+                }),
             }
         end,
     },
-    {
-        'tpope/vim-sleuth',
-    },
+    { 'tpope/vim-sleuth' },
 }
