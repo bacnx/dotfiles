@@ -20,6 +20,7 @@ return {
                 'typescript',
                 'tsx',
                 'go',
+                'markdown_inline',
             },
             auto_install = true,
             autotag = { enable = true },
