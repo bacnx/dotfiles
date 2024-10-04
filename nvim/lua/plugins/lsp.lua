@@ -61,6 +61,7 @@ return {
     },
     {
         'nvimdev/lspsaga.nvim',
+        lazy = false,
         dependencies = {
             'nvim-treesitter/nvim-treesitter',
             'nvim-tree/nvim-web-devicons',
@@ -72,6 +73,11 @@ return {
             ui = {
                 code_action = '',
             },
+        },
+        keys = {
+            { 'K', '<CMD>Lspsaga hover_doc<CR>' },
+            { '[d', '<CMD>Lspsaga diagnostic_jump_prev<CR>' },
+            { ']d', '<CMD>Lspsaga diagnostic_jump_next<CR>' },
         },
     },
 }
