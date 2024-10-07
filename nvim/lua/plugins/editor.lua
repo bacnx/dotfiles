@@ -74,8 +74,10 @@ return {
                 sorting_strategy = 'ascending',
                 file_ignore_patterns = { 'node_modules' },
                 winblend = 0,
-                mappings = {
-                    n = {},
+            },
+            pickers = {
+                find_files = {
+                    hidden = true,
                 },
             },
         },
