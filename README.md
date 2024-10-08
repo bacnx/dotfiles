@@ -24,7 +24,6 @@
 - [powerlevel10k](https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#oh-my-zsh)
 - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md#oh-my-zsh)
 - [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/INSTALL.md#oh-my-zsh)
-- [zsh-auto-nvm-use](https://github.com/Sparragus/zsh-auto-nvm-use)
 
 ### [Tmux](https://github.com/tmux/tmux/wiki)
 
