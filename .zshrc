@@ -88,6 +88,7 @@ plugins=(
   zsh-syntax-highlighting
   web-search
   copyfile
+  zsh-auto-nvm-use
 )
 
 ZSH_TMUX_AUTOSTART=true
