@@ -24,10 +24,6 @@ return {
             },
             auto_install = true,
             autotag = { enable = true },
-            context_commentstring = {
-                enable = true,
-                enable_autocmd = false,
-            },
         },
         config = function(_, opts)
             local treesitter = require('nvim-treesitter.configs')

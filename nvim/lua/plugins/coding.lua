@@ -5,6 +5,24 @@ return {
         event = 'InsertEnter',
         config = true,
     },
+    -- Auto adjust shiftwidth and expandtab
+    { 'tpope/vim-sleuth' },
+    {
+        'JoosepAlviste/nvim-ts-context-commentstring',
+        config = function()
+            require('ts_context_commentstring').setup({
+                enable = true,
+                enable_autocmd = false,
+            })
+
+            local get_option = vim.filetype.get_option
+            vim.filetype.get_option = function(filetype, option)
+                return option == 'commentstring'
+                        and require('ts_context_commentstring.internal').calculate_commentstring()
+                    or get_option(filetype, option)
+            end
+        end,
+    },
     {
         'hrsh7th/nvim-cmp',
         event = 'InsertEnter',
@@ -44,5 +62,25 @@ return {
             }
         end,
     },
-    { 'tpope/vim-sleuth' },
+    {
+        'nvimdev/lspsaga.nvim',
+        lazy = false,
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter',
+            'nvim-tree/nvim-web-devicons',
+        },
+        opts = {
+            code_action = {
+                extend_gitsigns = true,
+            },
+            ui = {
+                code_action = '',
+            },
+        },
+        keys = {
+            { 'K', '<CMD>Lspsaga hover_doc<CR>' },
+            { '[d', '<CMD>Lspsaga diagnostic_jump_prev<CR>' },
+            { ']d', '<CMD>Lspsaga diagnostic_jump_next<CR>' },
+        },
+    },
 }
