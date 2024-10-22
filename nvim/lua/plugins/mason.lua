@@ -21,6 +21,7 @@ return {
                 'clangd',
                 'typescript-language-server',
                 'gopls',
+                'golangci-lint-langserver',
                 'emmet-ls',
 
                 -- formatter

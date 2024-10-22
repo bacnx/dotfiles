@@ -20,11 +20,31 @@ return {
         config = function(_, opts)
             local lspconfig = require('lspconfig')
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
+            local configs = require('lspconfig/configs')
 
             for lsp, config in pairs(opts.servers) do
                 local lsp_config = vim.tbl_deep_extend('force', { capabilities = capabilities }, config)
                 lspconfig[lsp].setup(lsp_config)
             end
+
+            configs.golangcilsp = {
+                default_config = {
+                    cmd = { 'golangci-lint-langserver' },
+                    root_dir = require('lspconfig').util.root_pattern('.git', 'go.mod'),
+                    init_options = {
+                        command = {
+                            'golangci-lint',
+                            'run',
+                            '--enable-all',
+                            '--disable',
+                            'lll',
+                            '--out-format',
+                            'json',
+                            '--issues-exit-code=1',
+                        },
+                    },
+                },
+            }
         end,
         opts = {
             servers = {
@@ -53,6 +73,9 @@ return {
                             staticcheck = true,
                         },
                     },
+                },
+                golangci_lint_ls = {
+                    filetypes = { 'go', 'gomod' },
                 },
                 cssls = {},
                 emmet_ls = {},
