@@ -23,6 +23,7 @@ return {
                 'gopls',
                 'golangci-lint-langserver',
                 'emmet-ls',
+                'tailwindcss-language-server',
 
                 -- formatter
                 'stylua',

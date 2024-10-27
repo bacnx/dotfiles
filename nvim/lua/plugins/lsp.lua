@@ -79,6 +79,7 @@ return {
                 },
                 cssls = {},
                 emmet_ls = {},
+                tailwindcss = {},
             },
         },
     },
