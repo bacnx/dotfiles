@@ -3,13 +3,6 @@ return {
         'neovim/nvim-lspconfig',
         keys = {
             {
-                'gd',
-                function()
-                    require('telescope.builtin').lsp_definitions()
-                end,
-                desc = 'Goto definition',
-            },
-            {
                 'gI',
                 function()
                     require('telescope.builtin').lsp_implementations()
