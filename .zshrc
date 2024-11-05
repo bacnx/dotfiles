@@ -90,7 +90,7 @@ plugins=(
   copyfile
 )
 
-ZSH_TMUX_AUTOSTART=true
+ZSH_TMUX_AUTOSTART=false
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
