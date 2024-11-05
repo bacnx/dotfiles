@@ -5,9 +5,6 @@ return {
         build = ':TSUpdate',
         event = { 'BufReadPre', 'BufNewFile' },
         lazy = vim.fn.argc(-1) == 0,
-        dependencies = {
-            'windwp/nvim-ts-autotag',
-        },
         opts = {
             highlight = {
                 enable = true,
@@ -23,7 +20,6 @@ return {
                 'markdown_inline',
             },
             auto_install = true,
-            autotag = { enable = true },
         },
         config = function(_, opts)
             local treesitter = require('nvim-treesitter.configs')
