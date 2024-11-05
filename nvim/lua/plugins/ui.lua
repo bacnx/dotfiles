@@ -51,6 +51,8 @@ return {
         },
         keys = {
             { '<leader>nd', ':NoiceDismiss <CR>' },
+            { '<leader>nl', ':NoiceLast <CR>' },
+            { '<leader>nh', ':NoiceHistory <CR>' },
         },
         opts = {
             lsp = {
@@ -68,6 +70,15 @@ return {
             },
         },
         config = function(_, opts)
+            opts.routes = opts.routes or {}
+            table.insert(opts.routes, {
+                filter = {
+                    event = 'notify',
+                    find = 'No information available',
+                },
+                opts = { skip = true },
+            })
+
             require('noice').setup(opts)
             require('notify').setup({
                 background_colour = '#000000',
