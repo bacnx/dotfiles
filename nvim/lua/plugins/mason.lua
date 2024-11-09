@@ -31,6 +31,7 @@ return {
                 'goimports',
                 'golines',
                 'prettierd',
+                'buf',
 
                 -- lintter
                 'eslint_d',

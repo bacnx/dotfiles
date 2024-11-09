@@ -55,15 +55,12 @@ return {
                 desc = 'Resume the previous telescope picker',
             },
             {
-                '<Leader><Leader>',
+                ';b',
                 function()
-                    local telescope = require('telescope')
-                    telescope.extensions.recent_files.pick({
-                        only_cwd = true,
-                        initial_mode = 'normal',
-                    })
+                    local builtin = require('telescope.builtin')
+                    builtin.buffers()
                 end,
-                desc = 'Open recent files',
+                desc = 'Lists open buffers',
             },
         },
         opts = {
@@ -78,6 +75,9 @@ return {
             pickers = {
                 find_files = {
                     hidden = true,
+                },
+                buffers = {
+                    initial_mode = 'normal',
                 },
             },
         },
@@ -99,9 +99,6 @@ return {
     {
         'lewis6991/gitsigns.nvim',
         opts = {},
-        keys = {
-            { '<leader>gb', '<cmd>Gitsigns blame_line<cr>', desc = 'Git blame line'}
-        }
     },
     {
         'kdheepak/lazygit.nvim',
@@ -168,15 +165,6 @@ return {
             },
         },
     },
-    -- {
-    --     'nvim-focus/focus.nvim',
-    --     version = '*',
-    --     opts = {
-    --         ui = {
-    --             cursorline = false,
-    --         },
-    --     },
-    -- },
     {
         'windwp/nvim-ts-autotag',
         opts = {

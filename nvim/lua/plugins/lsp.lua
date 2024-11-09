@@ -9,6 +9,13 @@ return {
                 end,
                 desc = 'Goto implementation',
             },
+            {
+                'gD',
+                function()
+                    require('telescope.builtin').lsp_definitions()
+                end,
+                desc = 'Goto definition',
+            },
         },
         config = function(_, opts)
             local lspconfig = require('lspconfig')

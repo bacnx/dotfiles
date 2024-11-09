@@ -73,6 +73,10 @@ return {
             code_action = {
                 extend_gitsigns = true,
             },
+            definition = {
+                width = 0.8,
+                height = 0.7,
+            },
             ui = {
                 code_action = '',
             },

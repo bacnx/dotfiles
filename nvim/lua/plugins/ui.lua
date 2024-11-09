@@ -20,11 +20,10 @@ return {
                         'branch',
                         { 'diff', padding = { left = 0, right = 1 } },
                     },
-                    lualine_c = {
-                        { 'tabs', use_mode_colors = true, show_modified_status = false },
-                    },
+                    lualine_c = {},
 
                     lualine_x = {
+                        'searchcount',
                         {
                             function()
                                 return require('noice').api.status.mode.get()
