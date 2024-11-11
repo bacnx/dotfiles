@@ -6,10 +6,14 @@
 ## Requirements
 
 - [Nerd Font (v3)](https://www.nerdfonts.com/)
+- Xclip: for Tmux copy directly to the system clipboard
+```sh
+sudo apt-get install xclip
+```
 
 ## Install
 
-```shell
+```sh
 ./install.sh
 ```
 
