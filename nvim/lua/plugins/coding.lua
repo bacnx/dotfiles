@@ -85,7 +85,7 @@ return {
             { 'K', '<CMD>Lspsaga hover_doc<CR>' },
             { '[d', '<CMD>Lspsaga diagnostic_jump_prev<CR>' },
             { ']d', '<CMD>Lspsaga diagnostic_jump_next<CR>' },
-            { 'gd', '<CMD>Lspsaga peek_definition<CR>', desc = 'Goto definition', },
+            { 'gd', '<CMD>Lspsaga peek_definition<CR>', desc = 'Goto definition' },
         },
     },
 }

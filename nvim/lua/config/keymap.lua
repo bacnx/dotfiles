@@ -20,4 +20,4 @@ keymap.set('n', 'ss', ':split<Return><C-w>w', opts)
 keymap.set('n', 'sv', ':vsplit<Return><C-w>w', opts)
 
 -- Clear search with <esc>
-keymap.set({ 'i', 'n' }, '<esc>', '<cmd>noh<cr><esc>', { desc = 'Escape and Clear hlsearch' })
+keymap.set({ 'i', 'n' }, '<esc>', '<cmd>noh<cr><esc>', extend_opts({ desc = 'Escape and Clear hlsearch' }))

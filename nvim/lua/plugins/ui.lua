@@ -8,14 +8,13 @@ return {
 
             require('lualine').setup({
                 options = {
+                    icons_enabled = true,
                     theme = 'auto',
                     section_separators = '',
                     component_separators = '',
                 },
                 sections = {
-                    lualine_a = {
-                        { 'windows', use_mode_colors = true },
-                    },
+                    lualine_a = { { 'windows', use_mode_colors = true } },
                     lualine_b = {
                         'branch',
                         { 'diff', padding = { left = 0, right = 1 } },
@@ -39,6 +38,7 @@ return {
                             cond = require('noice').api.status.search.has,
                             color = { fg = '#ff9e64' },
                         },
+                        'filetype',
                     },
                     lualine_y = { 'progress' },
                     lualine_z = { 'location' },
