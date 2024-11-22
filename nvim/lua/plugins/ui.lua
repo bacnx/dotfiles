@@ -38,9 +38,8 @@ return {
                             cond = require('noice').api.status.search.has,
                             color = { fg = '#ff9e64' },
                         },
-                        'filetype',
                     },
-                    lualine_y = { 'progress' },
+                    lualine_y = { 'filetype', 'progress' },
                     lualine_z = { 'location' },
                 },
             })
