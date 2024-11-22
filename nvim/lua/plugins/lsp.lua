@@ -57,7 +57,9 @@ return {
                         },
                     },
                 },
-                clangd = {},
+                clangd = {
+                    filetypes = { 'c', 'objc', 'cpp', 'objcpp' },
+                },
                 ts_ls = {},
                 gopls = {
                     cmd = { 'gopls' },
@@ -80,6 +82,8 @@ return {
                 cssls = {},
                 emmet_ls = {},
                 tailwindcss = {},
+                protols = {},
+                jsonls = {},
             },
         },
     },

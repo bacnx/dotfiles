@@ -24,6 +24,8 @@ return {
                 'golangci-lint-langserver',
                 'emmet-ls',
                 'tailwindcss-language-server',
+                'json-lsp',
+                -- 'protols', not support yet
 
                 -- formatter
                 'stylua',
