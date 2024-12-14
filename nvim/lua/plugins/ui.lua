@@ -16,7 +16,15 @@ return {
                 sections = {
                     lualine_a = { { 'windows', use_mode_colors = true } },
                     lualine_b = {
-                        'branch',
+                        {
+                            'branch',
+                            fmt = function(str)
+                                if vim.api.nvim_strwidth(str) > 20 then
+                                    return ('%s..'):format(str:sub(1, 19))
+                                end
+                                return str
+                            end,
+                        },
                         { 'diff', padding = { left = 0, right = 1 } },
                     },
                     lualine_c = {},
@@ -39,7 +47,7 @@ return {
                             color = { fg = '#ff9e64' },
                         },
                     },
-                    lualine_y = { 'filetype', 'progress' },
+                    lualine_y = { 'progress' },
                     lualine_z = { 'location' },
                 },
             })
