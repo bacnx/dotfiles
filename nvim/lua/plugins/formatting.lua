@@ -11,10 +11,10 @@ return {
                 css = { 'prettierd' },
                 html = { 'prettierd' },
                 json = { 'prettierd' },
-                go = { 'gofumpt', 'goimports', 'golines' },
-                gomod = { 'gofumpt', 'goimports', 'golines' },
-                gowork = { 'gofumpt', 'goimports', 'golines' },
-                gotmpl = { 'gofumpt', 'goimports', 'golines' },
+                go = { 'gofumpt', 'goimports' },
+                gomod = { 'gofumpt', 'goimports' },
+                gowork = { 'gofumpt', 'goimports' },
+                gotmpl = { 'gofumpt', 'goimports' },
                 proto = { 'buf' }
             },
             format_on_save = {

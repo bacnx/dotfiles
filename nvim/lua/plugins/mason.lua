@@ -21,22 +21,21 @@ return {
                 'clangd',
                 'typescript-language-server',
                 'gopls',
-                'golangci-lint-langserver',
                 'emmet-ls',
                 'tailwindcss-language-server',
                 'json-lsp',
-                -- 'protols', not support yet
+                'protols',
 
                 -- formatter
                 'stylua',
                 'gofumpt',
                 'goimports',
-                'golines',
                 'prettierd',
                 'buf',
 
                 -- lintter
                 'eslint_d',
+                'golangci-lint',
             },
             auto_update = true,
             run_on_start = true,
