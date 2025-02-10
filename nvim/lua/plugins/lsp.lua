@@ -4,16 +4,12 @@ return {
         keys = {
             {
                 'gI',
-                function()
-                    require('telescope.builtin').lsp_implementations()
-                end,
+                require('telescope.builtin').lsp_implementations,
                 desc = 'Goto implementation',
             },
             {
                 'gD',
-                function()
-                    require('telescope.builtin').lsp_definitions()
-                end,
+                require('telescope.builtin').lsp_definitions,
                 desc = 'Goto definition',
             },
         },
