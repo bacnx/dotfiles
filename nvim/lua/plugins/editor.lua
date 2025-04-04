@@ -69,7 +69,7 @@ return {
                 layout_strategy = 'horizontal',
                 layout_config = { prompt_position = 'top' },
                 sorting_strategy = 'ascending',
-                file_ignore_patterns = { 'node_modules' },
+                file_ignore_patterns = { '.git/' },
                 winblend = 0,
             },
             pickers = {
