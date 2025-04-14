@@ -60,6 +60,8 @@ return {
                 tailwindcss = {},
                 protols = {},
                 jsonls = {},
+                dockerls = {},
+                docker_compose_language_service = {},
             },
         },
     },

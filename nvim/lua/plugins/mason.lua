@@ -25,6 +25,8 @@ return {
                 'tailwindcss-language-server',
                 'json-lsp',
                 'protols',
+                'dockerfile-language-server',
+                'docker-compose-language-service',
 
                 -- formatter
                 'stylua',
