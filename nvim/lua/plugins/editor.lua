@@ -162,6 +162,10 @@ return {
                     'tsc $fileName &&',
                     'node $fileNameWithoutExt.js',
                 },
+                go = {
+                    'cd $dir &&',
+                    'go run main.go',
+                },
             },
         },
     },

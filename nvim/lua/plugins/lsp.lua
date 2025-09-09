@@ -52,9 +52,6 @@ return {
                         },
                     },
                 },
-                golangci_lint_ls = {
-                    filetypes = { 'go', 'gomod' },
-                },
                 cssls = {},
                 emmet_ls = {},
                 tailwindcss = {},

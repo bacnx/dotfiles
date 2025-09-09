@@ -10,11 +10,13 @@ return {
                 options = {
                     icons_enabled = true,
                     theme = 'auto',
-                    section_separators = '',
                     component_separators = '',
+                    section_separators = { left = '', right = '' },
                 },
                 sections = {
-                    lualine_a = { { 'windows', use_mode_colors = true } },
+                    lualine_a = {
+                        { 'mode', separator = { left = '' }, right_padding = 2 },
+                    },
                     lualine_b = {
                         {
                             'branch',
@@ -25,9 +27,9 @@ return {
                                 return str
                             end,
                         },
-                        { 'diff', padding = { left = 0, right = 1 } },
+                        { 'diff' },
                     },
-                    lualine_c = {},
+                    lualine_c = { 'windows' },
 
                     lualine_x = {
                         'diagnostics',
@@ -48,7 +50,9 @@ return {
                         },
                     },
                     lualine_y = { 'progress' },
-                    lualine_z = { 'location' },
+                    lualine_z = {
+                        { 'location', separator = { right = '' }, left_padding = 2 },
+                    },
                 },
             })
         end,
@@ -62,9 +66,9 @@ return {
             'hrsh7th/nvim-cmp',
         },
         keys = {
-            { '<leader>nd', ':NoiceDismiss <CR>' },
-            { '<leader>nl', ':NoiceLast <CR>' },
-            { '<leader>nh', ':NoiceHistory <CR>' },
+            { '<leader>nd', ':NoiceDismiss <CR>', silent = true },
+            { '<leader>nl', ':NoiceLast <CR>', silent = true },
+            { '<leader>nh', ':NoiceHistory <CR>', silent = true },
         },
         opts = {
             lsp = {

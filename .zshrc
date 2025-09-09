@@ -96,6 +96,7 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
 VI_MODE_SET_CURSOR=true
+ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -129,6 +130,7 @@ export PATH="$PATH:$HOME/.local/bin"
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 export PATH="$PATH:$HOME/.local/share/gem/ruby/3.0.0/bin"
+export PATH="$PATH:$HOME/.cargo/bin"
 
 # bun completions
 [ -s "/home/nxbac/.bun/_bun" ] && source "/home/nxbac/.bun/_bun"
@@ -147,7 +149,7 @@ if [ -x "$(command -v eza)" ]; then
     alias la="eza -lahg --git --icons --group-directories-first"
 fi
 
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+# eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
