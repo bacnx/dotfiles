@@ -1,2 +1,8 @@
 gui:
   nerdFontsVersion: "3"
+customCommands:
+  - key: 'c'
+    command: 'git cz'
+    context: 'files'
+    description: 'Commit with commitizen'
+    output: terminal
