@@ -13,9 +13,26 @@ sudo apt-get install xclip
 
 ## Install
 
+### Link configs
 ```sh
-./install.sh
+ln -s $PWD/.zshrc ~/.zshrc
 ```
+```sh
+ln -s $PWD/.p10k.zsh ~/.p10k.zsh
+```
+```sh
+ln -s $PWD/.tmux.conf ~/.tmux.conf
+```
+```sh
+ln -s $PWD/.czrc ~/.czrc
+```
+```sh
+ln -s $PWD/nvim ~/.config/nvim
+```
+```sh
+ln -s $PWD/lazygit ~/.config/lazygit
+```
+
 
 ### [Neovim (v0.10)](https://neovim.io/)
 
