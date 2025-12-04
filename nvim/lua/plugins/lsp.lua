@@ -48,7 +48,6 @@ return {
                             analyses = {
                                 unusedparams = true,
                             },
-                            staticcheck = true,
                         },
                     },
                 },
@@ -59,6 +58,7 @@ return {
                 jsonls = {},
                 dockerls = {},
                 docker_compose_language_service = {},
+                zls = {},
             },
         },
     },

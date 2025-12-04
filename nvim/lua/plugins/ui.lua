@@ -1,7 +1,10 @@
 return {
     {
         'nvim-lualine/lualine.nvim',
-        dependencies = 'nvim-tree/nvim-web-devicons',
+        dependencies = {
+            'nvim-tree/nvim-web-devicons',
+            'folke/noice.nvim',
+        },
         config = function()
             -- hide default tab bar and use lualine tabs instead
             vim.opt.showtabline = 0
@@ -34,19 +37,12 @@ return {
                     lualine_x = {
                         'diagnostics',
                         {
-                            require('noice').api.status.command.get,
-                            cond = require('noice').api.status.command.has,
-                            color = { fg = '#ff9e64' },
-                        },
-                        {
                             require('noice').api.status.mode.get,
                             cond = require('noice').api.status.mode.has,
-                            color = { fg = '#ff9e64' },
                         },
                         {
                             require('noice').api.status.search.get,
                             cond = require('noice').api.status.search.has,
-                            color = { fg = '#ff9e64' },
                         },
                     },
                     lualine_y = { 'progress' },
@@ -90,7 +86,10 @@ return {
             table.insert(opts.routes, {
                 filter = {
                     event = 'notify',
-                    find = 'No information available',
+                    any = {
+                        { find = 'No information available' },
+                        { find = 'Plugin Updates' },
+                    },
                 },
                 opts = { skip = true },
             })
@@ -100,12 +99,6 @@ return {
                 background_colour = '#000000',
             })
         end,
-    },
-    {
-        'MeanderingProgrammer/render-markdown.nvim',
-        file_types = { 'markdown' },
-        dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
-        opts = {},
     },
     {
         'folke/trouble.nvim',

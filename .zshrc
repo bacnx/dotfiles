@@ -124,6 +124,7 @@ export LANG=en_US.UTF-8
 # alias ll="ls -al"
 alias v=nvim
 alias lg=lazygit
+alias btw=fastfetch
 
 # Export env
 export PATH="$PATH:$HOME/.local/bin"

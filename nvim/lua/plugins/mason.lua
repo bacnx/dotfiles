@@ -27,6 +27,7 @@ return {
                 'protols',
                 'dockerfile-language-server',
                 'docker-compose-language-service',
+                'zls',
 
                 -- formatter
                 'stylua',

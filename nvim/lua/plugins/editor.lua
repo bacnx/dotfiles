@@ -117,6 +117,16 @@ return {
         },
     },
     {
+        'esmuellert/vscode-diff.nvim',
+        dependencies = { 'MunifTanjim/nui.nvim' },
+        opts = {
+            modifiable = true,
+        },
+        keys = {
+            { '<leader>gd', '<cmd>CodeDiff<cr>', desc = 'VSCodeDiff' },
+        },
+    },
+    {
         'christoomey/vim-tmux-navigator',
         cmd = {
             'TmuxNavigateLeft',
@@ -165,6 +175,10 @@ return {
                 go = {
                     'cd $dir &&',
                     'go run main.go',
+                },
+                zig = {
+                    'cd $dir &&',
+                    'zig run $fileName',
                 },
             },
         },
