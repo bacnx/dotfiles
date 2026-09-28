@@ -17,6 +17,7 @@ vim.pack.add({
   "https://github.com/m4xshen/autoclose.nvim",
 
   "https://github.com/lewis6991/gitsigns.nvim",
+  "https://github.com/esmuellert/codediff.nvim",
 
   "https://github.com/nvim-lualine/lualine.nvim",
   "https://github.com/folke/trouble.nvim",
@@ -38,6 +39,7 @@ require("plugins.formatter")
 require("plugins.telescope")
 require("plugins.colorscheme")
 require("plugins.gitsigns")
+require("plugins.codediff")
 require("plugins.treesitter")
 require("plugins.ui")
 require("plugins.tmux-nav")
