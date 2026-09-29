@@ -116,25 +116,20 @@ forms: it is a home-row run on QWERTY but four scattered keys on Colemak-DH, cla
 `C-hjkl` at the root costs `C-l` (clear-screen) in the shell, and `prefix + l` is worth
 more as tmux's own `last-window`.
 
-Plugins are managed by [TPM](https://github.com/tmux-plugins/tpm) and used **only** for
-session persistence — the status bar and vim-tmux-navigator integration are hand-rolled in
-the config, so tmux is fully usable before plugins are installed.
+Plugins are managed by [TPM](https://github.com/tmux-plugins/tpm) — the status bar and
+vim-tmux-navigator integration are hand-rolled in the config, so tmux is fully usable
+before plugins are installed.
 
 ```sh
 git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
 ```
 Then start tmux and press `prefix + I` to install
-[tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect) and
-[tmux-continuum](https://github.com/tmux-plugins/tmux-continuum).
+[tmux-claude-hatch](https://github.com/craftzdog/tmux-claude-hatch).
 
-- Sessions auto-save every 15 minutes, scrollback included, and are restored
-  automatically when the server starts; save manually with `prefix + S`, restore with
-  `prefix + C-r`.
+- Sessions are not saved or restored: a tmux server restart starts clean.
 - Sessions are auto-named after the current directory, but only when tmux named them
   itself — `tmux new -s <name>` keeps the name you gave it. New windows and splits name
   the *window*, not the session.
-- Resurrect's save key is moved off its `prefix + C-s` default, which would otherwise
-  collide with `send-prefix` (the prefix is itself `C-s`).
 - `prefix + Space` opens the session picker; `prefix + w` shows the same tree with
   windows expanded.
 - `prefix + r` reloads the config.
