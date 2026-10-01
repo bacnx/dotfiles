@@ -1,11 +1,10 @@
+local t = require("config.tokens")
 local theme = require("lualine.themes.auto")
-local mocha = require("catppuccin.palettes").get_palette("mocha")
-local muted_fg = "#7a7f8b"
 local muted_bg = theme.normal.c.bg
 
 for _, mode in ipairs({ "normal", "insert", "visual", "replace", "command", "inactive" }) do
   if theme[mode] and theme[mode].c then
-    theme[mode].c = vim.tbl_extend("force", theme[mode].c, { fg = muted_fg, bg = muted_bg })
+    theme[mode].c = vim.tbl_extend("force", theme[mode].c, { fg = t.text.muted, bg = muted_bg })
   end
 end
 
@@ -29,13 +28,13 @@ local winbar_dir = {
 local function winbar_name(color)
   return { "filename", path = 0, cond = not_in_codediff, padding = { left = 0, right = 1 }, color = color }
 end
--- Catppuccin's git colors (its gitsigns integration uses the same three).
+-- Same git tokens as the gitsigns column (see colorscheme.lua).
 local winbar_diff = {
   "diff",
   diff_color = {
-    added = { fg = mocha.green },
-    modified = { fg = mocha.yellow },
-    removed = { fg = mocha.red },
+    added = { fg = t.git.added },
+    modified = { fg = t.git.changed },
+    removed = { fg = t.git.removed },
   },
 }
 
@@ -43,20 +42,20 @@ local winbar_diff = {
 -- mapping (normal blue, insert green, visual mauve, ...) but as fg only, so
 -- the bar keeps its muted background.
 local mode_fg = {
-  n = mocha.blue,
-  i = mocha.green,
-  t = mocha.green,
-  c = mocha.peach,
-  v = mocha.mauve,
-  V = mocha.mauve,
-  ["\22"] = mocha.mauve, -- <C-v> blockwise visual
-  s = mocha.mauve,
-  S = mocha.mauve,
-  ["\19"] = mocha.mauve, -- <C-s> blockwise select
-  R = mocha.red,
+  n = t.mode.normal,
+  i = t.mode.insert,
+  t = t.mode.insert,
+  c = t.mode.command,
+  v = t.mode.visual,
+  V = t.mode.visual,
+  ["\22"] = t.mode.visual, -- <C-v> blockwise visual
+  s = t.mode.visual,
+  S = t.mode.visual,
+  ["\19"] = t.mode.visual, -- <C-s> blockwise select
+  R = t.mode.replace,
 }
 local function mode_color()
-  return { fg = mode_fg[vim.api.nvim_get_mode().mode:sub(1, 1)] or mocha.text, gui = "bold" }
+  return { fg = mode_fg[vim.api.nvim_get_mode().mode:sub(1, 1)] or t.mode.normal, gui = "bold" }
 end
 
 require("lualine").setup({
@@ -78,13 +77,17 @@ require("lualine").setup({
     lualine_x = {
       {
         "diagnostics",
-        -- Same LazyVim icons as the sign column in diagnostics.lua.
-        symbols = { error = "\u{f057} ", warn = "\u{f071} ", info = "\u{f05a} ", hint = "\u{f0eb} " },
+        symbols = {
+          error = t.icons.diag.error .. " ",
+          warn = t.icons.diag.warn .. " ",
+          info = t.icons.diag.info .. " ",
+          hint = t.icons.diag.hint .. " ",
+        },
         diagnostics_color = {
-          error = "DiagnosticError",
-          warn = "DiagnosticWarn",
-          info = "DiagnosticInfo",
-          hint = "DiagnosticHint",
+          error = { fg = t.diag.error },
+          warn = { fg = t.diag.warn },
+          info = { fg = t.diag.info },
+          hint = { fg = t.diag.hint },
         },
         update_in_insert = false,
       },
@@ -97,8 +100,8 @@ require("lualine").setup({
     lualine_z = {},
   },
   winbar = {
-    -- Lavender makes the focused window's file name pop.
-    lualine_c = { winbar_dir, winbar_name({ fg = mocha.lavender, gui = "bold" }), winbar_diff },
+    -- The accent makes the focused window's file name pop.
+    lualine_c = { winbar_dir, winbar_name({ fg = t.text.accent, gui = "bold" }), winbar_diff },
   },
   inactive_winbar = {
     lualine_c = { winbar_dir, winbar_name(), winbar_diff },
