@@ -37,6 +37,72 @@ local function scroll_diff(keys)
   end
 end
 
+-- Toggling the layout (t) moves focus into the diff pane; when it was pressed
+-- from the explorer, put the cursor back there once the re-render settles.
+local view = require("codediff.ui.view")
+local toggle_layout = view.toggle_layout
+view.toggle_layout = function(tabpage)
+  local from_win = vim.api.nvim_get_current_win()
+  local ok = toggle_layout(tabpage)
+  if vim.bo[vim.api.nvim_win_get_buf(from_win)].filetype == "codediff-explorer" then
+    vim.schedule(function()
+      if vim.api.nvim_win_is_valid(from_win) then
+        vim.api.nvim_set_current_win(from_win)
+      end
+    end)
+  end
+  return ok
+end
+
+-- Wrap long lines in the inline layout only: side-by-side needs 'wrap' off to
+-- keep both panes aligned row for row. codediff resets wrap=false on every
+-- inline render, so turn it back on whenever that happens.
+vim.api.nvim_create_autocmd("OptionSet", {
+  pattern = "wrap",
+  callback = function()
+    local win = vim.api.nvim_get_current_win()
+    local lifecycle = package.loaded["codediff.ui.lifecycle"]
+    local sess = lifecycle and lifecycle.get_session(vim.api.nvim_win_get_tabpage(win))
+    if sess and sess.layout == "inline" and sess.modified_win == win and not vim.wo[win].wrap then
+      vim.wo[win].wrap = true
+    end
+  end,
+})
+
+-- codediff leaves 'relativenumber' to the user, so the diff panes inherit the
+-- global setting; use absolute numbers there so both sides line up by number.
+-- codediff snapshots each pane's number options into sess.window_profiles and
+-- re-applies that snapshot whenever the pane changes, so patch it too.
+-- BufWinEnter re-applies it because a buffer brings back the window options it
+-- last had, which would turn relative numbers on again when switching files.
+local function absolute_numbers(tabpage)
+  local lifecycle = package.loaded["codediff.ui.lifecycle"]
+  local sess = lifecycle and lifecycle.get_session(tabpage)
+  if not sess then
+    return
+  end
+  for _, profile in pairs(sess.window_profiles or {}) do
+    profile.relativenumber = false
+  end
+  for _, win in ipairs({ sess.original_win, sess.modified_win }) do
+    if vim.api.nvim_win_is_valid(win) then
+      vim.wo[win].relativenumber = false
+    end
+  end
+end
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = "CodeDiffOpen",
+  callback = function(ev)
+    absolute_numbers(ev.data.tabpage)
+  end,
+})
+vim.api.nvim_create_autocmd("BufWinEnter", {
+  callback = function()
+    absolute_numbers(vim.api.nvim_get_current_tabpage())
+  end,
+})
+
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "codediff-explorer",
   callback = function(ev)
