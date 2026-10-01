@@ -48,6 +48,17 @@ ln -s $PWD/starship.toml ~/.config/starship.toml
 # only the config file, not the whole directory.
 ln -s $PWD/herdr/config.toml ~/.config/herdr/config.toml
 ```
+```sh
+# Shared git settings + the catppuccin delta theme. Git reads ~/.config/git/config
+# before ~/.gitconfig, so keep machine-only settings ([user], employer [url]
+# rewrites, includeIf identities) in an untracked ~/.gitconfig.
+ln -s $PWD/git ~/.config/git
+```
+```sh
+# Syntax theme that delta's catppuccin-mocha feature asks for; delta reads it
+# from bat's cache, so rebuild it. Debian/Ubuntu name the binary `batcat`.
+ln -s $PWD/bat ~/.config/bat && batcat cache --build
+```
 
 
 ### [Neovim (v0.12+)](https://neovim.io/)
@@ -57,6 +68,8 @@ Plugins are managed by the builtin `vim.pack` (requires v0.12), pinned in
 
 
 - [lazygit](https://github.com/jesseduffield/lazygit?tab=readme-ov-file#installation)
+- [delta](https://github.com/dandavison/delta#installation) — the pager for git and lazygit
+- [bat](https://github.com/sharkdp/bat#installation) — only its theme cache is used, for delta's syntax colors
 - [ripgrep](https://github.com/BurntSushi/ripgrep?tab=readme-ov-file#installation)
 - [fd](https://github.com/sharkdp/fd#installation) — Debian and Ubuntu install it as
   `fdfind`, which tools that shell out to `fd` (Telescope, for one) never find. A
