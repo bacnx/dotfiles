@@ -103,6 +103,20 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
   end,
 })
 
+-- codediff clears both panes' winbar on every BufEnter/WinEnter, and lualine's
+-- timer only puts it back up to a second later, so the panes jump a row. Put
+-- the lualine winbar (path + revision, see ui.lua) back right after codediff.
+vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter", "WinEnter" }, {
+  callback = function()
+    local lifecycle = package.loaded["codediff.ui.lifecycle"]
+    if lifecycle and lifecycle.get_session(vim.api.nvim_get_current_tabpage()) then
+      vim.schedule(function()
+        require("lualine").refresh({ scope = "tabpage", place = { "winbar" } })
+      end)
+    end
+  end,
+})
+
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "codediff-explorer",
   callback = function(ev)

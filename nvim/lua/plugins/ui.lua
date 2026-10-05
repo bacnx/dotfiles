@@ -8,26 +8,73 @@ for _, mode in ipairs({ "normal", "insert", "visual", "replace", "command", "ina
   end
 end
 
--- codediff's diff panes keep the real file's filetype, so disabled_filetypes
--- can't reach them; hide the winbar for any window in a codediff tab instead.
-local function not_in_codediff()
+-- In a codediff tab the left pane shows a codediff:// buffer, so both diff
+-- panes take the path from the session instead (relative to the git root), plus
+-- the revision that side shows. Both panes need a winbar, or none: a winbar on
+-- one side only would push its lines a row below the other side's.
+local function codediff_side()
   local lifecycle = package.loaded["codediff.ui.lifecycle"]
-  return not (lifecycle and lifecycle.get_session(vim.api.nvim_get_current_tabpage()))
+  local sess = lifecycle and lifecycle.get_session(vim.api.nvim_get_current_tabpage())
+  if not sess then
+    return nil
+  end
+  local win = vim.api.nvim_get_current_win()
+  local side = (win == sess.original_win and "original") or (win == sess.modified_win and "modified") or nil
+  if not side then
+    return nil
+  end
+  -- An added or deleted file has a path on one side only.
+  local path = sess[side] or sess[side == "original" and "modified" or "original"]
+  return { path = path and path.relative or vim.fn.expand("%:~:."), revision = sess[side .. "_revision"] }
 end
+local function in_codediff()
+  return codediff_side() ~= nil
+end
+local function not_in_codediff()
+  return not in_codediff()
+end
+
+local function revision_label(revision)
+  if revision == nil or revision == "WORKING" then
+    return "working"
+  elseif revision == "STAGED" then
+    return "staged"
+  elseif revision:match("^%x+$") and #revision >= 40 then
+    return revision:sub(1, 7)
+  end
+  return revision
+end
+
 -- The winbar path is two components so only the file name stands out. The
 -- leading space lives in the dir part, which is never empty, so a file in the
 -- cwd root still gets padding.
 local winbar_dir = {
   function()
-    local dir = vim.fn.fnamemodify(vim.fn.expand("%:~:."), ":h")
+    local side = codediff_side()
+    local dir = vim.fn.fnamemodify(side and side.path or vim.fn.expand("%:~:."), ":h")
     return " " .. ((dir == "." or dir == "") and "" or dir .. "/")
   end,
-  cond = not_in_codediff,
   padding = 0,
 }
 local function winbar_name(color)
   return { "filename", path = 0, cond = not_in_codediff, padding = { left = 0, right = 1 }, color = color }
 end
+local function winbar_diff_name(color)
+  return {
+    function()
+      return vim.fn.fnamemodify(codediff_side().path, ":t")
+    end,
+    cond = in_codediff,
+    padding = { left = 0, right = 1 },
+    color = color,
+  }
+end
+local winbar_revision = {
+  function()
+    return revision_label(codediff_side().revision)
+  end,
+  cond = in_codediff,
+}
 -- Same git tokens as the gitsigns column (see colorscheme.lua).
 local winbar_diff = {
   "diff",
@@ -101,9 +148,15 @@ require("lualine").setup({
   },
   winbar = {
     -- The accent makes the focused window's file name pop.
-    lualine_c = { winbar_dir, winbar_name({ fg = t.text.accent, gui = "bold" }), winbar_diff },
+    lualine_c = {
+      winbar_dir,
+      winbar_name({ fg = t.text.accent, gui = "bold" }),
+      winbar_diff_name({ fg = t.text.accent, gui = "bold" }),
+      winbar_revision,
+      winbar_diff,
+    },
   },
   inactive_winbar = {
-    lualine_c = { winbar_dir, winbar_name(), winbar_diff },
+    lualine_c = { winbar_dir, winbar_name(), winbar_diff_name(), winbar_revision, winbar_diff },
   },
 })
