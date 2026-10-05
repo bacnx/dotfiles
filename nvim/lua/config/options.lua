@@ -64,6 +64,7 @@ opt.splitright = true
 
 opt.termguicolors = true
 opt.cursorline = true
+opt.showmode = false -- lualine already shows the mode
 
 opt.undofile = true
 opt.swapfile = false
