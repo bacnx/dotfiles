@@ -111,7 +111,7 @@ require("lualine").setup({
     theme = theme,
     component_separators = "",
     disabled_filetypes = {
-      winbar = { "codediff-explorer", "codediff-history", "codediff-help" },
+      winbar = { "codediff-explorer", "codediff-history", "codediff-help", "startpage" },
     },
   },
   sections = {

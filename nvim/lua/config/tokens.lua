@@ -10,6 +10,12 @@ return {
   mode = { normal = p.blue, insert = p.green, visual = p.mauve, replace = p.red, command = p.peach },
   git = { added = p.green, changed = p.yellow, removed = p.red },
   diag = { error = p.red, warn = p.yellow, info = p.sky, hint = p.teal },
+  -- The start page logo fades top to bottom; keys stand out from the labels.
+  startpage = {
+    header = { p.sapphire, p.blue, p.blue, p.lavender, p.lavender, p.mauve },
+    section = p.blue,
+    key = p.peach,
+  },
   -- LazyVim's icons, written as escapes: pasting the raw Nerd Font glyphs has
   -- dropped them to plain spaces before.
   icons = {
