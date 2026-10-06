@@ -1,3 +1,15 @@
+-- vim.pack has no build step, so compile telescope-fzf-native's C sorter here.
+-- It must be registered before vim.pack.add() to see the first install, and it
+-- waits so the library exists before telescope loads the extension.
+vim.api.nvim_create_autocmd("PackChanged", {
+  callback = function(ev)
+    local kind = ev.data.kind
+    if ev.data.spec.name == "telescope-fzf-native.nvim" and (kind == "install" or kind == "update") then
+      vim.system({ "make" }, { cwd = ev.data.path }):wait()
+    end
+  end,
+})
+
 vim.pack.add({
   "https://github.com/neovim/nvim-lspconfig",
   "https://github.com/mason-org/mason.nvim",
@@ -8,6 +20,7 @@ vim.pack.add({
   "https://github.com/nvim-lua/plenary.nvim",
   "https://github.com/nvim-telescope/telescope.nvim",
   "https://github.com/nvim-telescope/telescope-file-browser.nvim",
+  "https://github.com/nvim-telescope/telescope-fzf-native.nvim",
 
   "https://github.com/christoomey/vim-tmux-navigator",
 
