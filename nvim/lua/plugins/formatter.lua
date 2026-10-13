@@ -78,7 +78,7 @@ vim.keymap.set({ 'n', 'v' }, '<leader>cf', function()
 end, { desc = 'Format buffer / range' })
 
 -- Toggle format-on-save globally
-vim.keymap.set('n', '<leader>tf', function()
+vim.keymap.set('n', '<leader>uf', function()
   vim.g.disable_autoformat = not vim.g.disable_autoformat
   vim.notify(
     'Format on save: ' .. (vim.g.disable_autoformat and 'OFF' or 'ON'),
@@ -87,7 +87,7 @@ vim.keymap.set('n', '<leader>tf', function()
 end, { desc = 'Toggle format-on-save' })
 
 -- Toggle format-on-save for current buffer only
-vim.keymap.set('n', '<leader>tF', function()
+vim.keymap.set('n', '<leader>uF', function()
   vim.b.disable_autoformat = not vim.b.disable_autoformat
   vim.notify(
     'Buffer format on save: ' .. (vim.b.disable_autoformat and 'OFF' or 'ON'),
