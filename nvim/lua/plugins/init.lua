@@ -34,6 +34,7 @@ vim.pack.add({
 
   "https://github.com/nvim-lualine/lualine.nvim",
   "https://github.com/folke/trouble.nvim",
+  "https://github.com/MeanderingProgrammer/render-markdown.nvim",
 
   -- Workflow plugins carried over from the previous lazy.nvim config.
   -- vim-test and code_runner both dispatch into a tmux pane via vimux.
@@ -57,6 +58,7 @@ require("plugins.treesitter")
 require("plugins.ui")
 require("plugins.tmux-nav")
 require("plugins.trouble")
+require("plugins.markdown")
 require("plugins.lazygit")
 require("plugins.test")
 require("plugins.runner")
