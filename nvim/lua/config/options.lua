@@ -65,6 +65,7 @@ opt.splitright = true
 opt.termguicolors = true
 opt.cursorline = true
 opt.showmode = false -- lualine already shows the mode
+opt.showtabline = 0 -- never show the tabline; tabs still work via gt / gT
 
 opt.undofile = true
 opt.swapfile = false
