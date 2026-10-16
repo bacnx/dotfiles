@@ -72,4 +72,3 @@ opt.swapfile = false
 opt.backup = false
 
 opt.updatetime = 250
-opt.timeoutlen = 500
