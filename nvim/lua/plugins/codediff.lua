@@ -132,7 +132,19 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+-- Diff only the current file against HEAD (no explorer), or close the CodeDiff
+-- tab when already inside one.
+local function toggle_file_diff()
+  local lifecycle = require("codediff.ui.lifecycle")
+  if lifecycle.get_session(vim.api.nvim_get_current_tabpage()) then
+    lifecycle.close()
+  else
+    vim.cmd("CodeDiff file HEAD")
+  end
+end
+
 local map = vim.keymap.set
+map("n", "<leader>gt", toggle_file_diff, { desc = "CodeDiff: toggle current file diff" })
 map("n", "<leader>gd", "<cmd>CodeDiff<CR>", { desc = "CodeDiff: working tree" })
 map("n", "<leader>gD", "<cmd>CodeDiff main...<CR>", { desc = "CodeDiff: branch vs main" })
 map("n", "<leader>gf", "<cmd>CodeDiff history %<CR>", { desc = "CodeDiff: file history" })
