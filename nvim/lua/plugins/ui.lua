@@ -105,11 +105,33 @@ local function mode_color()
   return { fg = mode_fg[vim.api.nvim_get_mode().mode:sub(1, 1)] or t.mode.normal, gui = "bold" }
 end
 
+-- cmdheight=0 (see options.lua) leaves no row for "recording @q", so the
+-- statusline shows it. lualine's refresh events don't cover macros, and
+-- reg_recording() is still set during RecordingLeave, hence the schedule.
+local recording = {
+  function()
+    return "recording @" .. vim.fn.reg_recording()
+  end,
+  cond = function()
+    return vim.fn.reg_recording() ~= ""
+  end,
+  color = { fg = t.mode.replace, gui = "bold" },
+}
+vim.api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave" }, {
+  group = vim.api.nvim_create_augroup("lualine_recording", { clear = true }),
+  callback = function()
+    vim.schedule(function()
+      require("lualine").refresh({ place = { "statusline" } })
+    end)
+  end,
+})
+
 require("lualine").setup({
   options = {
     icons_enabled = false,
     theme = theme,
     component_separators = "",
+    globalstatus = true, -- one bar for all splits (laststatus=3, see options.lua)
     disabled_filetypes = {
       winbar = { "codediff-explorer", "codediff-history", "codediff-help", "startpage" },
     },
@@ -120,8 +142,13 @@ require("lualine").setup({
     lualine_c = {
       { "mode", color = mode_color },
       "branch",
+      recording,
     },
     lualine_x = {
+      -- Pending keys ('showcmdloc' = statusline) and the [3/10] search count,
+      -- which ui2 drops when cmdheight is 0.
+      "%S",
+      "searchcount",
       {
         "diagnostics",
         symbols = {

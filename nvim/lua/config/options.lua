@@ -65,6 +65,19 @@ opt.splitright = true
 opt.termguicolors = true
 opt.cursorline = true
 opt.showmode = false -- lualine already shows the mode
+-- One statusline across the bottom instead of one per split; each window's
+-- file name is already in its winbar (plugins/ui.lua).
+opt.laststatus = 3
+
+-- ui2 (experimental in 0.12) draws the cmdline and messages in floating
+-- windows, so the row under the statusline can go: the cmdline appears only
+-- while typing, and messages pop up bottom-right and fade after a few seconds
+-- (g< or :messages shows them again). cmdheight must be set first: ui2 reads it
+-- once, when the module loads. With no cmdline row, showcmd, the macro being
+-- recorded and the search count move into lualine (see plugins/ui.lua).
+opt.cmdheight = 0
+opt.showcmdloc = "statusline"
+require("vim._core.ui2").enable({ msg = { targets = "msg" } })
 opt.showtabline = 0 -- never show the tabline; tabs still work via gt / gT
 
 opt.undofile = true
