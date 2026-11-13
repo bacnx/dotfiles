@@ -1,8 +1,5 @@
 # Terminal Config (Linux)
 
-![screenshot-1](./images/screenshot-1.png)
-![screenshot-2](./images/screenshot-2.png)
-
 ## Requirements
 
 - [Nerd Font (v3)](https://www.nerdfonts.com/)
