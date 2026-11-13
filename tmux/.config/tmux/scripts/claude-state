@@ -1,0 +1,120 @@
+#!/usr/bin/env bash
+# Publish each running Claude's status into tmux options, so choose-tree's -F
+# format (see TREE_FMT in tmux.conf) can draw it next to the session, window or
+# pane the Claude lives in.
+#
+#   claude-state               sync once
+#   claude-state watch <pane>  sync, then keep syncing while <pane> shows the tree
+#
+# The status comes from `claude agents --json` -- the same source the
+# tmux-claude-hatch picker reads -- so the two screens cannot disagree, and a
+# Claude that crashed simply drops out on the next sync. No Claude Code hooks.
+#
+# Three option names, one per level, because a tree line only sees its own
+# level plus the *active* pane below it: a Claude waiting in a background pane
+# would be invisible on its window's line. So the most urgent state is rolled
+# up and written at each level:
+#
+#   @claude_pane_state   on the pane running Claude
+#   @claude_win_state    on its window  (most urgent of its panes)
+#   @claude_sess_state   on its session (most urgent of its windows)
+#
+# A Claude in a hatch session (claude-<hash>, hidden from the tree) is credited
+# to the window it was launched from, which hatch records in @claude_origin.
+set -uo pipefail
+
+INTERVAL=2
+
+sync() {
+  local agents rows prefix line
+  local -a cmd=() words
+
+  agents="$(claude agents --json 2>/dev/null)" || agents='[]'
+  rows="$(printf '%s' "$agents" |
+    jq -r '.[] | select(.kind == "interactive") | [.pid, .status] | @tsv' 2>/dev/null)"
+  prefix="$(tmux show-option -gqv @claude_session_prefix 2>/dev/null)"
+
+  # Three tagged streams into one awk: pid->tty, the pane table, the agents.
+  # It prints one tmux command per line, tab-separated, and only for options
+  # whose value has to change -- an unchanged tree costs zero tmux commands.
+  while IFS= read -r line; do
+    IFS=$'\t' read -r -a words <<<"$line"
+    [ "${#cmd[@]}" -gt 0 ] && cmd+=(';')
+    cmd+=("${words[@]}")
+  done < <(
+    {
+      ps -Ao pid=,tty= 2>/dev/null | awk '{ print "P\t" $1 "\t" $2 }'
+      # "-" stands in for an unset option: bash's read would otherwise merge the
+      # empty fields, and awk's would shift on a trailing one.
+      tmux list-panes -a -F $'T\t#{pane_tty}\t#{pane_id}\t#{window_id}\t#{session_id}\t#{session_name}\t#{?@claude_origin,#{@claude_origin},-}\t#{?@claude_pane_state,#{@claude_pane_state},-}\t#{?@claude_win_state,#{@claude_win_state},-}\t#{?@claude_sess_state,#{@claude_sess_state},-}' 2>/dev/null
+      [ -n "$rows" ] && printf '%s\n' "$rows" | sed $'s/^/A\t/'
+    } | awk -F'\t' -v prefix="${prefix:-claude-}" '
+      function bump(arr, key, state) {
+        if (rank[state] > rank[arr[key]]) arr[key] = state
+      }
+      function emit(flags, target, option, have, want) {
+        if (want == "") want = "-"
+        if (have == want) return
+        if (want == "-") printf "set-option\t-%su\t-t\t%s\t%s\n", flags, target, option
+        else             printf "set-option\t-%s\t-t\t%s\t%s\t%s\n", flags, target, option, want
+      }
+      BEGIN {
+        # What needs you outranks what is busy, which outranks what is done.
+        rank["waiting"] = 3; rank["working"] = 2; rank["idle"] = 1
+        name["waiting"] = "waiting"; name["busy"] = "working"; name["idle"] = "idle"
+      }
+      $1 == "P" { tty_of[$2] = $3; next }
+      $1 == "T" {
+        sub(/^\/dev\//, "", $2)
+        pane_at[$2] = $3
+        win_of[$3] = $4; sess_of[$4] = $5
+        hatch[$5] = (index($6, prefix) == 1); origin[$5] = $7
+        have_p[$3] = $8; have_w[$4] = $9; have_s[$5] = $10
+        next
+      }
+      $1 == "A" {
+        state = name[$3]; tty = tty_of[$2]
+        if (state == "" || !(tty in pane_at)) next   # unknown status, or not in tmux
+        p = pane_at[tty]; w = win_of[p]; s = sess_of[w]
+        bump(want_p, p, state); bump(want_w, w, state); bump(want_s, s, state)
+        o = origin[s]
+        if (hatch[s] && (o in sess_of) && !hatch[sess_of[o]]) {
+          bump(want_w, o, state); bump(want_s, sess_of[o], state)
+        }
+      }
+      END {
+        # The flag letter picks the level: -p pane, -w window. A session option
+        # takes no letter at all, so it cannot go through emit().
+        for (p in have_p) emit("p", p, "@claude_pane_state", have_p[p], want_p[p])
+        for (w in have_w) emit("w", w, "@claude_win_state",  have_w[w], want_w[w])
+        for (s in have_s) {
+          want = (want_s[s] == "") ? "-" : want_s[s]
+          if (have_s[s] == want) continue
+          if (want == "-") printf "set-option\t-u\t-t\t%s\t@claude_sess_state\n", s
+          else             printf "set-option\t-t\t%s\t@claude_sess_state\t%s\n", s, want
+        }
+      }
+    '
+  )
+
+  [ "${#cmd[@]}" -gt 0 ] && tmux "${cmd[@]}" 2>/dev/null
+  return 0
+}
+
+case "${1:-}" in
+watch)
+  pane="${2:-}"
+  [ -n "$pane" ] || exit 0
+  sync
+  # choose-tree redraws by itself when an option changes, so keeping the options
+  # fresh is all it takes for the open tree to update. The loop ends with the
+  # tree: nothing polls while the chooser is closed.
+  while sleep "$INTERVAL"; do
+    [ "$(tmux display-message -p -t "$pane" '#{pane_mode}' 2>/dev/null)" = "tree-mode" ] || break
+    sync
+  done
+  ;;
+*) sync ;;
+esac
+# run-shell shows a failed command's output in the pane; never give it a reason.
+exit 0
