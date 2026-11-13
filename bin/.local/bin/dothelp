@@ -1,0 +1,84 @@
+#!/bin/sh
+# Open the dotfiles cheatsheet (docs/ in this repo) in the default browser.
+#
+#   dothelp         serve docs/ on localhost and open it
+#   dothelp stop    stop the server
+#
+# The server keeps running in the background, so the next `dothelp` only opens
+# the page. Port: $DOTHELP_PORT, default 4747. Browser: $BROWSER wins when set.
+
+port="${DOTHELP_PORT:-4747}"
+url="http://localhost:$port/"
+pidfile="${XDG_RUNTIME_DIR:-/tmp}/dothelp-$port.pid"
+
+# ~/.local/bin/dothelp is a Stow symlink into the repo, so resolve it to find
+# docs/ wherever the repo was cloned.
+self=$(readlink -f "$0")
+site="$(dirname "$self")/../../../docs"
+
+has() { command -v "$1" >/dev/null 2>&1; }
+is_wsl() {
+    [ -n "$WSL_DISTRO_NAME" ] || grep -qi microsoft /proc/version 2>/dev/null
+}
+running() {
+    [ -f "$pidfile" ] && kill -0 "$(cat "$pidfile")" 2>/dev/null
+}
+
+open_url() {
+    if [ -n "$BROWSER" ]; then
+        "$BROWSER" "$1"
+    elif is_wsl && has wslview; then
+        wslview "$1"
+    elif is_wsl && has explorer.exe; then
+        # On WSL the default browser is the Windows one. explorer.exe opens it
+        # but always exits 1, so its status is ignored.
+        explorer.exe "$1" || true
+    elif has xdg-open; then
+        xdg-open "$1" >/dev/null 2>&1
+    else
+        return 1
+    fi
+}
+
+case "${1:-}" in
+    stop)
+        if running; then
+            kill "$(cat "$pidfile")" && echo "Cheatsheet server stopped."
+        else
+            echo "Cheatsheet server is not running."
+        fi
+        rm -f "$pidfile"
+        exit 0
+        ;;
+    "") ;;
+    *)
+        echo "usage: dothelp [stop]" >&2
+        exit 2
+        ;;
+esac
+
+if [ ! -f "$site/index.html" ]; then
+    echo "dothelp: no cheatsheet at $site" >&2
+    exit 1
+fi
+
+if ! running; then
+    if ! has python3; then
+        echo "dothelp: python3 is needed to serve the cheatsheet" >&2
+        exit 1
+    fi
+    # 127.0.0.1 only: the page is not offered to the network.
+    nohup python3 -m http.server "$port" --bind 127.0.0.1 --directory "$site" \
+        >/dev/null 2>&1 &
+    echo $! > "$pidfile"
+    # Give it a moment; a dead process here means the port was taken.
+    sleep 0.3
+    if ! running; then
+        rm -f "$pidfile"
+        echo "dothelp: could not start a server on port $port (set DOTHELP_PORT to use another)" >&2
+        exit 1
+    fi
+fi
+
+echo "Cheatsheet: $url  (dothelp stop to stop the server)"
+open_url "$url" || echo "dothelp: no browser opener found; open the URL yourself" >&2

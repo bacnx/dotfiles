@@ -13,6 +13,13 @@ sudo chmod +x /usr/local/bin/win32yank.exe
 > On a native X11/Wayland Linux box install `wl-clipboard` or `xclip` instead —
 > `bin/clip` detects them and nothing else needs changing.
 
+## Cheatsheet
+
+`dothelp` opens a page with every key binding in this config (Neovim first, then
+tmux and zsh) in the default browser. It serves `docs/` on
+`http://localhost:4747/` in the background; `dothelp stop` ends the server. It
+needs `python3` and the `bin` package stowed.
+
 ## Install
 
 ### Link configs

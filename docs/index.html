@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Key bindings for my Neovim, tmux and zsh config.">
+<title>Dotfiles Cheatsheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script>
+// Apply the saved flavour before the first paint, so there is no flash.
+try {
+  var f = localStorage.getItem("flavor");
+  if (f) document.documentElement.dataset.flavor = f;
+} catch (e) {}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1><span class="tilde">~/</span>.dotfiles cheatsheet</h1>
+    <p class="lede">Every key this config adds to Neovim, plus the short list for tmux, zsh and lazygit. Built from the files in the repo, so it shows only what is really mapped.</p>
+    <div class="legend">
+      <span><kbd class="leader">Space</kbd> is the leader key</span>
+      <span><kbd>C-x</kbd> Ctrl+x</span>
+      <span><kbd>A-x</kbd> Alt+x</span>
+      <span><kbd>S-x</kbd> Shift+x</span>
+      <span><span class="mode" style="margin:0">v</span> works in that mode (no badge = normal mode)</span>
+    </div>
+  </header>
+</div>
+
+<div class="bar">
+  <div class="wrap">
+    <div class="search">
+      <input id="filter" type="search" placeholder="Filter: grep, hunk, gd, format…" autocomplete="off" spellcheck="false" aria-label="Filter shortcuts">
+      <kbd class="hint">/</kbd>
+    </div>
+    <div class="flavors" role="group" aria-label="Catppuccin flavor">
+      <button type="button" data-flavor="latte" style="--dot:#eff1f5">Latte</button>
+      <button type="button" data-flavor="frappe" style="--dot:#303446">Frappé</button>
+      <button type="button" data-flavor="macchiato" style="--dot:#24273a">Macchiato</button>
+      <button type="button" data-flavor="mocha" style="--dot:#1e1e2e">Mocha</button>
+    </div>
+    <nav id="nav" aria-label="Sections"></nav>
+  </div>
+</div>
+
+<main class="wrap" id="main"></main>
+<div class="wrap">
+  <p class="empty" id="empty">No shortcut matches that filter. Press <kbd>Esc</kbd> to clear it.</p>
+  <footer>Source: <code>nvim/.config/nvim/lua</code>, <code>tmux/.config/tmux/tmux.conf</code>, <code>zsh/.zshrc</code>, <code>lazygit/.config/lazygit/config.yml</code>. Rows marked built-in are Neovim 0.12 defaults that this config relies on.</footer>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
