@@ -30,6 +30,18 @@ gui:
       - '#cdd6f4'
   authorColors:
     '*': '#b4befe'
+# Inside nvim's terminal ($NVIM is set, e.g. <leader>gg), `e` opens the file in
+# that nvim instead of a nested one: send `q` to quit lazygit, then --remote
+# the file. Outside nvim it is plain `nvim`. The nvim-remote preset already
+# does this, and decides when to suspend lazygit; these overrides only swap its
+# --remote-tab for --remote, because nvim hides the tabline (showtabline=0) and
+# works with buffers. editAtLineAndWait (commit messages) stays nested: remote
+# nvim can't wait for the buffer to close.
+os:
+  editPreset: nvim-remote
+  edit: '[ -z "$NVIM" ] && (nvim -- {{filename}}) || (nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{filename}})'
+  editAtLine: '[ -z "$NVIM" ] && (nvim +{{line}} -- {{filename}}) || (nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{filename}} && nvim --server "$NVIM" --remote-send ":{{line}}<CR>")'
+  openDirInEditor: '[ -z "$NVIM" ] && (nvim -- {{dir}}) || (nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{dir}})'
 customCommands:
   - key: 'c'
     command: 'git cz'
