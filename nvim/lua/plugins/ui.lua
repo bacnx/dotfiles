@@ -146,8 +146,14 @@ require("lualine").setup({
     },
     lualine_x = {
       -- Pending keys ('showcmdloc' = statusline) and the [3/10] search count,
-      -- which ui2 drops when cmdheight is 0.
-      "%S",
+      -- which ui2 drops when cmdheight is 0. In the cmdline, showcmd would only
+      -- echo the : or / that opened it.
+      {
+        "%S",
+        cond = function()
+          return vim.fn.mode() ~= "c"
+        end,
+      },
       "searchcount",
       {
         "diagnostics",

@@ -19,6 +19,23 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
+-- The cmdline gets the same treatment (:help cmdline-autocompletion): a popup
+-- menu of matches opens while typing after :, / or ?. noselect keeps what was
+-- typed until <Tab> or an arrow picks a match; 'wildoptions' already has pum.
+vim.o.wildmode = "noselect:lastused,full"
+vim.api.nvim_create_autocmd("CmdlineChanged", {
+  pattern = { ":", "/", "?" },
+  callback = function()
+    vim.fn.wildtrigger()
+  end,
+})
+-- <Up>/<Down> close the menu and walk the cmdline history, as without it.
+for _, key in ipairs({ "<Up>", "<Down>" }) do
+  vim.keymap.set("c", key, function()
+    return vim.fn.wildmenumode() == 1 and "<C-e>" .. key or key
+  end, { expr = true })
+end
+
 -- bin/clip from this repo (symlinked to ~/.local/bin/clip) picks the backend --
 -- clip.exe / win32yank on WSL, wl-copy on Wayland, xclip or xsel on X11 -- so
 -- the choice is made in one place shared with .zshrc and tmux.
