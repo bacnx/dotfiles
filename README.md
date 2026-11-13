@@ -19,52 +19,45 @@ sudo chmod +x /usr/local/bin/win32yank.exe
 ## Install
 
 ### Link configs
+
+Each top-level folder is a [GNU Stow](https://www.gnu.org/software/stow/)
+package that mirrors `$HOME`: `nvim/.config/nvim` links to `~/.config/nvim`,
+`zsh/.zshrc` to `~/.zshrc`, and so on. Clone to `~/.dotfiles`; Stow's default
+target is the repo's parent, so no `--target` is needed.
+
 ```sh
-ln -s $PWD/.zshrc ~/.zshrc
-```
-```sh
-ln -s $PWD/.zshenv ~/.zshenv
-```
-```sh
-ln -s $PWD/tmux ~/.config/tmux
-```
-```sh
-ln -s $PWD/.czrc ~/.czrc
-```
-```sh
-ln -s $PWD/nvim ~/.config/nvim
-```
-```sh
-mkdir -p ~/.local/bin && ln -s $PWD/bin/clip ~/.local/bin/clip
-```
-```sh
-mkdir -p ~/.config/lazygit && ln -s $PWD/lazygit/config.yml ~/.config/lazygit/config.yml
-```
-```sh
-ln -s $PWD/starship.toml ~/.config/starship.toml
-```
-```sh
-# herdr writes logs/sockets/session state into ~/.config/herdr, so symlink
-# only the config file, not the whole directory.
-ln -s $PWD/herdr/config.toml ~/.config/herdr/config.toml
-```
-```sh
-# Shared git settings + the catppuccin delta theme. Git reads ~/.config/git/config
-# before ~/.gitconfig, so keep machine-only settings ([user], employer [url]
-# rewrites, includeIf identities) in an untracked ~/.gitconfig.
-ln -s $PWD/git ~/.config/git
-```
-```sh
-# Syntax theme that delta's catppuccin-mocha feature asks for; delta reads it
-# from bat's cache, so rebuild it. Debian/Ubuntu name the binary `batcat`.
-ln -s $PWD/bat ~/.config/bat && batcat cache --build
+sudo apt install stow   # Arch: sudo pacman -S stow
+cd ~/.dotfiles
+# Stow links a whole folder when it doesn't exist yet. These folders get files
+# written by other programs, so create them first and Stow links only our files.
+mkdir -p ~/.config/herdr ~/.config/lazygit ~/.local/bin
+stow zsh commitizen bin nvim tmux git bat lazygit herdr starship
 ```
 
+`stow -n -v <package>` is a dry run; `stow -D <package>` removes its links, and
+`stow -R <package>` re-links after adding or removing files in it. An existing
+file in the way is reported as a conflict, never overwritten.
+
+Notes on what the packages link:
+
+- `herdr` links only `config.toml`: herdr writes logs, sockets and session
+  state into `~/.config/herdr`.
+- `git` holds the shared settings and the catppuccin delta theme. Git reads
+  `~/.config/git/config` before `~/.gitconfig`, so keep machine-only settings
+  (`[user]`, employer `[url]` rewrites, `includeIf` identities) in an untracked
+  `~/.gitconfig`.
+- `bat` holds the syntax theme that delta's catppuccin-mocha feature asks for.
+  delta reads it from bat's cache, so rebuild it after stowing (Debian/Ubuntu
+  name the binary `batcat`):
+  ```sh
+  batcat cache --build
+  ```
+- `zsh/.zshrc.local.example` is not linked (see `zsh/.stow-local-ignore`).
 
 ### [Neovim (v0.12+)](https://neovim.io/)
 
 Plugins are managed by the builtin `vim.pack` (requires v0.12), pinned in
-`nvim/nvim-pack-lock.json`. No plugin-manager bootstrap needed.
+`nvim/.config/nvim/nvim-pack-lock.json`. No plugin-manager bootstrap needed.
 
 
 - [lazygit](https://github.com/jesseduffield/lazygit?tab=readme-ov-file#installation)
@@ -109,7 +102,7 @@ it into the dump. The dump is rebuilt at most once a day.
 
 **Machine-local settings** go in `~/.zshrc.local` (sourced last, so it overrides)
 and `~/.zshrc.local.pre` (sourced early, for PATH and `fpath` the feature detection
-has to see). Neither is tracked — see `.zshrc.local.example` for which goes where.
+has to see). Neither is tracked — see `zsh/.zshrc.local.example` for which goes where.
 Keeping work-only settings and installer-appended blocks there is what lets this
 repo stay portable.
 
@@ -121,7 +114,7 @@ works as a standalone "copy this" command. On Arch install `wl-clipboard` or
 
 ### [Tmux](https://github.com/tmux/tmux/wiki)
 
-Config lives at `tmux/tmux.conf`, loaded from `~/.config/tmux/tmux.conf` (tmux 3.1+).
+Config lives at `tmux/.config/tmux/tmux.conf`, loaded from `~/.config/tmux/tmux.conf` (tmux 3.1+).
 Prefix is `C-s`. Pane navigation is on `prefix + arrows`, resizing on `prefix + C-arrows`,
 and vim-aware pane switching on bare `C-arrows`, which cross the Neovim/tmux boundary
 transparently and work in copy-mode too. `hjkl` is deliberately left unbound in both
