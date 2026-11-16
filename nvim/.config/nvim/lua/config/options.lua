@@ -93,6 +93,12 @@ opt.laststatus = 3
 -- once, when the module loads. With no cmdline row, showcmd, the macro being
 -- recorded and the search count move into lualine (see plugins/ui.lua).
 opt.cmdheight = 0
+-- Every float without its own border (hover, mason, ui2 messages, plugin
+-- popups) and the completion menu get rounded corners. Set before ui2 opens its
+-- message window. The transparent float background is catppuccin's
+-- float.transparent (see plugins/colorscheme.lua).
+opt.winborder = "rounded"
+opt.pumborder = "rounded"
 opt.showcmdloc = "statusline"
 require("vim._core.ui2").enable({ msg = { targets = "msg" } })
 opt.showtabline = 0 -- never show the tabline; tabs still work via gt / gT
