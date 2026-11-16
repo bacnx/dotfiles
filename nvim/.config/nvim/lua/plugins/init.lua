@@ -25,6 +25,7 @@ vim.pack.add({
   "https://github.com/christoomey/vim-tmux-navigator",
 
   "https://github.com/catppuccin/nvim",
+  "https://github.com/nvim-tree/nvim-web-devicons", -- file icons (codediff explorer, telescope, trouble)
 
   "https://github.com/NMAC427/guess-indent.nvim",
   "https://github.com/m4xshen/autoclose.nvim",

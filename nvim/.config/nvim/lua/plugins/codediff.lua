@@ -1,7 +1,14 @@
 -- The diff library (libvscode_diff.so) is downloaded on first :CodeDiff.
 -- Run `:CodeDiff install!` to force a reinstall.
+local t = require("config.tokens")
+
 require("codediff").setup({
   explorer = {
+    -- Directory tree with │ ├ └ guides; single-child chains (a/b/c/) stay flattened.
+    view_mode = "tree",
+    indent_markers = true,
+    -- +N -M per file and per group header.
+    line_stats = { enabled = true },
     -- <Up>/<Down> (and j/k) open the file under the cursor; focus stays in the explorer
     auto_open_on_cursor = true,
   },
@@ -15,6 +22,27 @@ require("codediff").setup({
       focus_explorer = "<leader>ge",
     },
   },
+})
+
+-- codediff links its explorer colours with default=true, so these win. Status
+-- letters use the same git tokens as the gitsigns column (see colorscheme.lua);
+-- the tree guides stay muted so the file names lead.
+local function explorer_highlights()
+  local set = vim.api.nvim_set_hl
+  set(0, "CodeDiffStatusAdded", { fg = t.git.added, bold = true })
+  set(0, "CodeDiffStatusModified", { fg = t.git.changed, bold = true })
+  set(0, "CodeDiffStatusDeleted", { fg = t.git.removed, bold = true })
+  set(0, "CodeDiffStatusUntracked", { fg = t.git.added, italic = true })
+  set(0, "CodeDiffStatusConflict", { fg = t.git.removed, bold = true })
+  set(0, "CodeDiffExplorerStatInsertions", { fg = t.git.added })
+  set(0, "CodeDiffExplorerStatDeletions", { fg = t.git.removed })
+  set(0, "CodeDiffExplorerTreeGroup", { fg = t.text.accent, bold = true })
+  set(0, "NeoTreeIndentMarker", { fg = t.text.muted })
+end
+explorer_highlights()
+vim.api.nvim_create_autocmd("ColorScheme", {
+  group = vim.api.nvim_create_augroup("codediff_explorer_hl", { clear = true }),
+  callback = explorer_highlights,
 })
 
 -- Scroll the diff panes from the explorer without focusing them.
