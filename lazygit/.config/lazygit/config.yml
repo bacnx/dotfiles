@@ -28,8 +28,8 @@ gui:
       - '#f38ba8'
     defaultFgColor:
       - '#cdd6f4'
-  authorColors:
-    '*': '#b4befe'
+    authorColors:
+      '*': '#b4befe'
 # Inside nvim's terminal ($NVIM is set, e.g. <leader>gg), `e` opens the file in
 # that nvim instead of a nested one: send `q` to quit lazygit, then --remote
 # the file. Outside nvim it is plain `nvim`. The nvim-remote preset already
@@ -49,6 +49,6 @@ customCommands:
     description: 'Commit with commitizen'
     output: terminal
 git:
-  pagers:
+  diffRenderers:
     - colorArg: always
-      pager: delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
+      command: delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
