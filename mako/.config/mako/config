@@ -1,0 +1,27 @@
+# mako — Catppuccin Mocha. Dismiss with $mod+n, all with $mod+Shift+n.
+font=JetBrainsMono Nerd Font 11
+background-color=#1e1e2e
+text-color=#cdd6f4
+border-color=#cba6f7
+progress-color=over #313244
+border-size=2
+border-radius=12
+padding=12
+margin=10
+width=360
+height=160
+max-icon-size=48
+icons=1
+anchor=top-right
+default-timeout=5000
+layer=overlay
+
+[urgency=low]
+border-color=#45475a
+
+[urgency=high]
+border-color=#fab387
+default-timeout=0
+
+[app-name=screenshot]
+max-icon-size=96
