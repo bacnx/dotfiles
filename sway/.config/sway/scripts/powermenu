@@ -1,0 +1,19 @@
+#!/bin/sh
+# powermenu — pick lock / logout / suspend / reboot / shutdown in fuzzel.
+set -e
+
+choice=$(printf '%s\n' \
+    '  Lock' \
+    '  Logout' \
+    '  Suspend' \
+    '  Reboot' \
+    '  Shutdown' |
+    fuzzel --dmenu --prompt 'Power: ' --lines 5 --width 20) || exit 0   # Esc cancels
+
+case "$choice" in
+    *Lock)     swaylock -f ;;
+    *Logout)   swaymsg exit ;;
+    *Suspend)  systemctl suspend ;;      # swayidle locks before sleep
+    *Reboot)   systemctl reboot ;;
+    *Shutdown) systemctl poweroff ;;
+esac

@@ -27,6 +27,7 @@ set $menu  fuzzel
 set $lock  swaylock -f
 
 set $shot  ~/.config/sway/scripts/screenshot
+set $power ~/.config/sway/scripts/powermenu
 
 # ── Output ──────────────────────────────────────────────────────────────────
 output * bg $base solid_color
@@ -63,8 +64,10 @@ focus_follows_mouse yes
 mouse_warping none
 
 # ── Idle & lock ─────────────────────────────────────────────────────────────
-# Lock at 10 min, screen off at 15 min, lock before sleep.
+# Lock at 10 min, screen off at 15 min, lock before sleep and on
+# `loginctl lock-session`.
 exec swayidle -w \
+    lock '$lock' \
     timeout 600 '$lock' \
     timeout 900 'swaymsg "output * power off"' \
         resume  'swaymsg "output * power on"' \
@@ -107,7 +110,7 @@ bindsym $mod+q      kill
 
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+l exec $lock
-bindsym $mod+Shift+e exec swaynag -t warning -m 'Exit sway?' -B 'Exit' 'swaymsg exit'
+bindsym $mod+Shift+e exec $power
 
 # Focus / move
 bindsym $mod+$left  focus left
