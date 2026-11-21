@@ -36,6 +36,8 @@ cd ~/.dotfiles
 # written by other programs, so create them first and Stow links only our files.
 mkdir -p ~/.config/herdr ~/.config/lazygit ~/.local/bin
 stow zsh commitizen bin nvim tmux git bat lazygit herdr starship
+# Sway desktop (native Linux only)
+stow sway waybar fuzzel mako swaylock alacritty
 ```
 
 `stow -n -v <package>` is a dry run; `stow -D <package>` removes its links, and
@@ -150,6 +152,37 @@ Then start tmux and press `prefix + I` to install
 ### Terminal
 
 - [eza](https://github.com/eza-community/eza/blob/main/INSTALL.md)
+
+### Sway (Wayland desktop)
+
+A minimal Catppuccin Mocha desktop for native Linux: [sway](https://swaywm.org/)
+with [waybar](https://github.com/Alexays/Waybar), the
+[fuzzel](https://codeberg.org/dnkl/fuzzel) launcher,
+[mako](https://github.com/emersion/mako) notifications and swaylock. It sits beside
+another desktop: pick **Sway** in the display manager's session menu.
+
+```sh
+sudo pacman -S --needed sway swaybg swayidle swaylock waybar fuzzel mako grim slurp \
+    xdg-desktop-portal-wlr network-manager-applet blueman polkit-gnome playerctl \
+    wl-clipboard pavucontrol ttf-jetbrains-mono-nerd
+```
+
+- `$mod` is Super. `$mod+Return` terminal (Alacritty), `$mod+d`/`$mod+Space`
+  launcher, `$mod+q` close, arrows focus / `Shift+arrows` move, `$mod+1..0`
+  workspaces, `$mod+r` resize mode, `$mod+f` fullscreen, `$mod+Shift+space` float,
+  `$mod+-` scratchpad, `$mod+Shift+l` lock, `$mod+n` dismiss notification,
+  `$mod+Shift+c` reload, `$mod+Shift+e` exit.
+- `Print` captures a region, `Shift+Print` the whole screen; both copy to the
+  clipboard and save to `~/Pictures/Screenshots`.
+- Idle: lock at 10 min, screens off at 15 min, lock before sleep; fullscreen
+  windows inhibit it.
+- Machine-specific outputs and inputs go in `~/.config/sway/config.d/*.conf`,
+  which git ignores (e.g. `output HDMI-A-4 scale 1`); list devices with
+  `swaymsg -t get_outputs` / `get_inputs`. The CPU temperature sensor
+  (`coretemp`) in waybar is Intel-specific: check `sensors`.
+- Autostarted: mako, fcitx5, nm-applet, blueman-applet, polkit-gnome. Screen
+  sharing goes through `xdg-desktop-portal-wlr`, which Arch's sway package already
+  routes via `sway-portals.conf`.
 
 ### [Commitizen](https://github.com/commitizen/cz-cli)
 ```shell
