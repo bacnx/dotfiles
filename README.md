@@ -16,9 +16,19 @@ sudo chmod +x /usr/local/bin/win32yank.exe
 ## Cheatsheet
 
 `dothelp` opens a page with every key binding in this config (Neovim first, then
-tmux and zsh) in the default browser. It serves `docs/` on
+tmux, sway and zsh) in the default browser. It serves `docs/` on
 `http://localhost:4747/` in the background; `dothelp stop` ends the server. It
-needs `python3` and the `bin` package stowed.
+needs `python3` (3.11+) and the `bin` package stowed.
+
+The bindings live in [`keymaps.toml`](keymaps.toml); the page is rebuilt from it
+on every `dothelp`. When you change a binding in a config, change that file in
+the same commit. The pre-commit hook refuses a commit that touches binding
+lines without it, and `dothelp check` lists nvim leader maps the file is
+missing. Turn the hook on once per clone:
+
+```sh
+git config core.hooksPath .githooks
+```
 
 ## Install
 

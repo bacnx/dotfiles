@@ -1,0 +1,347 @@
+# Every key binding this repo adds, in one place. `dothelp` renders it as the
+# cheatsheet page (docs/), so this file is the cheatsheet's only source.
+#
+# Keep it in step with the configs: a commit that changes a binding in nvim,
+# tmux, zsh, sway or lazygit must change this file too. The pre-commit hook
+# (.githooks/pre-commit) refuses the commit otherwise, and `dothelp check`
+# lists nvim leader maps that are missing here.
+#
+# Layout: [[group]] is a page section, [[group.card]] a box inside it.
+#   id     anchor for the nav link          title  card heading
+#   sub    optional line under the heading  rows   the bindings
+#
+# A row: { keys, desc, mode?, note? }
+#   keys   caps separated by spaces, alternatives by " | ". A first cap "L" is
+#          the leader (Space); later ones are the L key. C- Ctrl, A- Alt, S- Shift. Shell and :commands are shown as
+#          code when they start with ":" or name a command.
+#   desc   what it does
+#   mode   space-separated modes where it is not normal mode only (n v x o i c,
+#          zsh: ins cmd)
+#   note   small print under the description
+
+[[group]]
+title = "Neovim"
+
+[[group.card]]
+id = "basics"
+title = "Basics"
+rows = [
+  { keys = "L w", desc = "Save file" },
+  { keys = "L q", desc = "Quit window" },
+  { keys = "Esc", desc = "Clear search highlight" },
+  { keys = "C-d | C-u", desc = "Half page down / up, cursor stays centered" },
+  { keys = "Down | Up", desc = "Move by screen line", mode = "n v", note = "With a count (5 Down) it moves real lines" },
+  { keys = "g <", desc = "Show the last messages again", note = "Messages pop up bottom-right and fade" },
+  { keys = "y | p", desc = "Yank and paste use the system clipboard", mode = "n v", note = "Through bin/clip" },
+  { keys = "L y f", desc = "Copy the file path, relative to cwd" },
+  { keys = "L y F", desc = "Copy the absolute file path" },
+]
+
+[[group.card]]
+id = "edit"
+title = "Editing"
+rows = [
+  { keys = "A-Down | A-Up", desc = "Move line down / up", mode = "n v" },
+  { keys = "J | K", desc = "Move selection down / up", mode = "v" },
+  { keys = "g q", desc = "Format a motion with conform", mode = "n v" },
+  { keys = "( [ { \" '", desc = "Closing pair is typed for you", mode = "i", note = "autoclose.nvim" },
+]
+
+[[group.card]]
+id = "buffers"
+title = "Buffers"
+rows = [
+  { keys = "Tab | S-Tab", desc = "Next / previous buffer" },
+  { keys = "L Space", desc = "Jump back to the last buffer" },
+  { keys = "L c", desc = "Close buffer" },
+  { keys = "L C", desc = "Close all buffers" },
+]
+
+[[group.card]]
+id = "windows"
+title = "Windows and panes"
+sub = "The same keys cross between nvim splits and tmux panes."
+rows = [
+  { keys = "C-Left | C-Down | C-Up | C-Right", desc = "Go to the split or tmux pane in that direction" },
+  { keys = "C-h | C-j | C-k | C-l", desc = "Same, on the home row" },
+  { keys = "C-S-Left | C-S-Right", desc = "Make window narrower / wider" },
+  { keys = "C-S-Up | C-S-Down", desc = "Make window taller / shorter" },
+  { keys = "g t | g T", desc = "Next / previous tab", note = "The tabline is hidden" },
+]
+
+[[group.card]]
+id = "find"
+title = "Find (Telescope)"
+rows = [
+  { keys = "L f f", desc = "Find files" },
+  { keys = "L f g", desc = "Live grep" },
+  { keys = "L f w", desc = "Grep the word under the cursor" },
+  { keys = "L f b", desc = "Open buffers" },
+  { keys = "L f o", desc = "Recent files in this folder" },
+  { keys = "L f r", desc = "Reopen the last picker", note = "Keeps the query and the selection" },
+  { keys = "L f /", desc = "Fuzzy search in this buffer" },
+  { keys = "L f S", desc = "Symbols in this file" },
+  { keys = "L f k", desc = "Search all keymaps" },
+  { keys = "L f s", desc = "File browser, at the current file" },
+  { keys = "L f a", desc = "Find files, also git-ignored ones" },
+  { keys = "L f G", desc = "Live grep, also git-ignored files" },
+  { keys = "L g s", desc = "Git status picker" },
+  { keys = "L d", desc = "Diagnostics picker" },
+]
+
+[[group.card]]
+id = "picker"
+title = "Inside a picker"
+rows = [
+  { keys = "C-j | C-k", desc = "Next / previous result", mode = "i" },
+  { keys = "Esc", desc = "Close", mode = "i" },
+  { keys = "' word", desc = "Exact match" },
+  { keys = "^ word", desc = "Starts with" },
+  { keys = "word $", desc = "Ends with" },
+  { keys = "! word", desc = "Exclude" },
+]
+
+[[group.card]]
+id = "lsp"
+title = "LSP"
+sub = "Servers: lua_ls, ts_ls, gopls, sqls, eslint."
+rows = [
+  { keys = "K", desc = "Hover documentation" },
+  { keys = "g d", desc = "Go to definition" },
+  { keys = "g D", desc = "Go to declaration" },
+  { keys = "g i", desc = "Go to implementation" },
+  { keys = "g r", desc = "References", note = "Many results open in the quickfix list" },
+  { keys = "C-t", desc = "Jump back from gd / gi / gr" },
+  { keys = "C-o | C-i", desc = "Older / newer jump position", note = "built-in" },
+  { keys = "A-s", desc = "Signature help", mode = "i" },
+  { keys = "g r n", desc = "Rename symbol", note = "built-in" },
+  { keys = "g r a", desc = "Code action", mode = "n v", note = "built-in" },
+  { keys = "L c e", desc = "ESLint: fix all", note = "Only where eslint is attached" },
+]
+
+[[group.card]]
+id = "complete"
+title = "Completion"
+sub = "The menu opens by itself while you type."
+rows = [
+  { keys = "C-n | C-p", desc = "Next / previous item", mode = "i", note = "built-in" },
+  { keys = "C-y", desc = "Accept the selected item", mode = "i", note = "built-in" },
+  { keys = "C-e", desc = "Close the menu", mode = "i", note = "built-in" },
+  { keys = "Tab", desc = "Pick a match on the command line", mode = "c" },
+  { keys = "Up | Down", desc = "Walk command history", mode = "c", note = "Closes the menu first" },
+]
+
+[[group.card]]
+id = "diag"
+title = "Diagnostics"
+rows = [
+  { keys = "] d | [ d", desc = "Next / previous diagnostic" },
+  { keys = "L e", desc = "Show the diagnostic on this line" },
+  { keys = "L d", desc = "All diagnostics in Telescope" },
+  { keys = "L D", desc = "Put diagnostics in the location list" },
+  { keys = "L x x", desc = "Trouble: all diagnostics" },
+  { keys = "L x X", desc = "Trouble: this buffer only" },
+  { keys = "L x s", desc = "Trouble: symbols" },
+  { keys = "L x l", desc = "Trouble: LSP references, on the right" },
+  { keys = "L x L", desc = "Trouble: location list" },
+  { keys = "L x Q", desc = "Trouble: quickfix list" },
+  { keys = "Down | Up", desc = "Next / previous item inside Trouble" },
+]
+
+[[group.card]]
+id = "hunks"
+title = "Git hunks (gitsigns)"
+sub = "A hunk is one block of changed lines."
+rows = [
+  { keys = "] h | [ h", desc = "Next / previous hunk" },
+  { keys = "] H | [ H", desc = "Last / first hunk" },
+  { keys = "L g h s", desc = "Stage hunk", mode = "n v" },
+  { keys = "L g h r", desc = "Reset hunk", mode = "n v" },
+  { keys = "L g h u", desc = "Undo the last staged hunk" },
+  { keys = "L g h S", desc = "Stage the whole buffer" },
+  { keys = "L g h R", desc = "Reset the whole buffer" },
+  { keys = "L g h p", desc = "Preview hunk in a popup" },
+  { keys = "L g h i", desc = "Preview hunk inline" },
+  { keys = "L g h b", desc = "Blame this line, full commit" },
+  { keys = "L g h B", desc = "Blame the whole buffer" },
+  { keys = "L g h d", desc = "Diff this file" },
+  { keys = "i h", desc = "The hunk as a text object", mode = "o x", note = "For example v i h or d i h" },
+]
+
+[[group.card]]
+id = "diff"
+title = "Git diff (codediff)"
+rows = [
+  { keys = "L g d", desc = "Diff the working tree" },
+  { keys = "L g D", desc = "Diff this branch against main" },
+  { keys = "L g t", desc = "Diff this file against HEAD, or close the diff" },
+  { keys = "L g f", desc = "History of this file" },
+  { keys = "L g f", desc = "History of the selected lines", mode = "x" },
+  { keys = "L g H", desc = "History of the repo" },
+  { keys = "L g h s", desc = "In a diff: stage hunk" },
+  { keys = "L g h u", desc = "In a diff: unstage hunk" },
+  { keys = "L g h r", desc = "In a diff: discard hunk" },
+  { keys = "L g e", desc = "In a diff: focus the file explorer" },
+  { keys = "t", desc = "In a diff: switch side-by-side / inline" },
+  { keys = "Down | Up", desc = "Explorer: open the next / previous file" },
+  { keys = "S-Down | S-Up", desc = "Explorer: scroll the diff 3 lines" },
+  { keys = "C-d | C-u", desc = "Explorer: scroll the diff half a page" },
+  { keys = "PageDown | PageUp", desc = "Explorer: scroll the diff one page" },
+]
+
+[[group.card]]
+id = "lazygit"
+title = "Lazygit"
+rows = [
+  { keys = "L g g", desc = "Open lazygit in a float" },
+  { keys = "e", desc = "In lazygit: open the file in this nvim", note = "No nested nvim" },
+  { keys = "c", desc = "In lazygit files: commit with commitizen", note = "Runs git cz" },
+]
+
+[[group.card]]
+id = "format"
+title = "Format (conform)"
+sub = "Files are formatted on save."
+rows = [
+  { keys = "L c f", desc = "Format the buffer or the selection", mode = "n v" },
+  { keys = "L u f", desc = "Turn format on save on / off" },
+  { keys = "L u F", desc = "Same, for this buffer only" },
+  { keys = "L c i", desc = "Show which formatters are active" },
+  { keys = "lua", desc = "stylua" },
+  { keys = "go", desc = "goimports, then gofmt" },
+  { keys = "python", desc = "ruff, else black" },
+  { keys = "js ts json", desc = "biome, else prettier", note = "Only when the repo has their config file" },
+  { keys = "css html md yaml", desc = "prettier" },
+  { keys = "sh | toml", desc = "shfmt | taplo" },
+]
+
+[[group.card]]
+id = "test"
+title = "Test and run"
+sub = "Output goes to a tmux pane (vimux)."
+rows = [
+  { keys = "L t t", desc = "Run the nearest test" },
+  { keys = "L t f", desc = "Run the tests in this file", note = "Go: only the tests declared in the file" },
+  { keys = "L t a", desc = "Run the whole suite" },
+  { keys = "L t l", desc = "Run the last test again" },
+  { keys = "L t g", desc = "Go to the last test file" },
+  { keys = "L r", desc = "Run this file", note = "TypeScript, Go, Zig" },
+]
+
+[[group.card]]
+id = "start"
+title = "Start page and sessions"
+rows = [
+  { keys = "f", desc = "Start page: find file" },
+  { keys = "g", desc = "Start page: grep" },
+  { keys = "e", desc = "Start page: file browser" },
+  { keys = "r", desc = "Start page: restore the last buffers" },
+  { keys = "1 … 9 | 0", desc = "Start page: open that recent file" },
+  { keys = "Enter", desc = "Start page: open the file under the cursor" },
+  { keys = "q", desc = "Start page: close" },
+  { keys = "L s s", desc = "Save session" },
+  { keys = "L s r", desc = "Restore session" },
+]
+
+[[group.card]]
+id = "toggles"
+title = "Toggles"
+sub = "Everything under Space u switches a view on or off."
+rows = [
+  { keys = "L u m", desc = "Markdown rendering" },
+  { keys = "L u b", desc = "Blame at the end of the line" },
+  { keys = "L u D", desc = "Show deleted lines" },
+  { keys = "L u f", desc = "Format on save" },
+  { keys = "L u F", desc = "Format on save, this buffer" },
+]
+
+[[group.card]]
+id = "commands"
+title = "Commands"
+rows = [
+  { keys = ":Mason", desc = "Install LSP servers and formatters" },
+  { keys = ":TSInstall", desc = "Install a treesitter parser" },
+  { keys = ":CodeDiff install!", desc = "Reinstall the diff library" },
+  { keys = ":lua vim.pack.update()", desc = "Update plugins", note = "Versions are pinned in nvim-pack-lock.json" },
+]
+
+[[group]]
+title = "Other tools"
+
+[[group.card]]
+id = "tmux"
+title = "tmux"
+sub = "Prefix is C-s."
+rows = [
+  { keys = "C-Left | C-Down | C-Up | C-Right", desc = "Go to the pane or nvim split in that direction", note = "No prefix" },
+  { keys = "C-s Left | Down | Up | Right", desc = "Select pane" },
+  { keys = "C-s C-Left | C-Right | C-Up | C-Down", desc = "Resize pane by 5", note = "Repeatable" },
+  { keys = "C-s s", desc = "Split: new pane below" },
+  { keys = "C-s v", desc = "Split: new pane on the right" },
+  { keys = "C-s c", desc = "New window, same folder" },
+  { keys = "C-s l", desc = "Last window" },
+  { keys = "C-s Space", desc = "Session picker" },
+  { keys = "C-s w", desc = "Session picker with windows" },
+  { keys = "C-s y", desc = "Launch Claude (claude-hatch)" },
+  { keys = "C-s r", desc = "Reload the config" },
+  { keys = "C-s I", desc = "Install plugins (TPM)" },
+  { keys = "y | Enter", desc = "Copy mode: copy to the system clipboard" },
+]
+
+[[group.card]]
+id = "sway"
+title = "Sway"
+sub = "Mod is the Super (Windows) key."
+rows = [
+  { keys = "Mod Return", desc = "Open a terminal (alacritty)" },
+  { keys = "Mod d | Mod Space", desc = "App launcher (fuzzel)" },
+  { keys = "Mod q", desc = "Close the window" },
+  { keys = "Mod Left | Down | Up | Right", desc = "Focus the window in that direction" },
+  { keys = "Mod S-Left | S-Down | S-Up | S-Right", desc = "Move the window in that direction" },
+  { keys = "Mod 1 … 9 | Mod 0", desc = "Go to workspace 1 … 10" },
+  { keys = "Mod S-1 … 9 | Mod S-0", desc = "Move the window to workspace 1 … 10" },
+  { keys = "Mod Tab", desc = "Back to the previous workspace" },
+  { keys = "Mod b | Mod v", desc = "Next window opens to the right / below" },
+  { keys = "Mod s | Mod w | Mod e", desc = "Layout: stacking / tabbed / toggle split" },
+  { keys = "Mod f", desc = "Fullscreen" },
+  { keys = "Mod S-Space", desc = "Float the window, or tile it again" },
+  { keys = "Mod a", desc = "Focus the parent container" },
+  { keys = "Mod S-minus | Mod minus", desc = "Send to / show the scratchpad" },
+  { keys = "Mod r", desc = "Resize mode", note = "Arrows resize by 20px; Enter or Esc leaves" },
+  { keys = "Print | S-Print", desc = "Screenshot a region / the whole screen" },
+  { keys = "Mod n | Mod S-n", desc = "Dismiss the notification / all of them" },
+  { keys = "Mod S-l", desc = "Lock the screen" },
+  { keys = "Mod S-c", desc = "Reload the config" },
+  { keys = "Mod S-e", desc = "Exit sway", note = "Asks first" },
+  { keys = "Volume | Mute | Play | Next | Prev", desc = "Media keys work, also on the lock screen" },
+]
+
+[[group.card]]
+id = "zsh"
+title = "zsh"
+sub = "The command line uses vi keys."
+rows = [
+  { keys = "j k", desc = "Leave insert mode", mode = "ins" },
+  { keys = "v", desc = "Edit the command in nvim", mode = "cmd" },
+  { keys = "y | Y | d | c", desc = "Copy / cut to the system clipboard", mode = "cmd" },
+  { keys = "p | P", desc = "Paste from the system clipboard", mode = "cmd" },
+  { keys = "v", desc = "nvim" },
+  { keys = "lg", desc = "lazygit" },
+  { keys = "ls | la", desc = "eza with icons, folders first" },
+  { keys = "ll | lla", desc = "eza long list with git status" },
+  { keys = "z dir", desc = "Jump to a folder (zoxide)" },
+  { keys = "cmd | clip", desc = "Copy any command output" },
+  { keys = "dothelp", desc = "Open this cheatsheet" },
+  { keys = "dothelp stop", desc = "Stop the cheatsheet server" },
+]
+
+[[group.card]]
+id = "stow"
+title = "Stow"
+sub = "Run inside ~/.dotfiles."
+rows = [
+  { keys = "stow nvim", desc = "Link a package into $HOME" },
+  { keys = "stow -n -v nvim", desc = "Dry run" },
+  { keys = "stow -R nvim", desc = "Link again after adding or removing files" },
+  { keys = "stow -D nvim", desc = "Remove the links" },
+]

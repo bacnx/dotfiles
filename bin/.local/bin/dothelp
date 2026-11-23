@@ -1,7 +1,8 @@
 #!/bin/sh
 # Open the dotfiles cheatsheet (docs/ in this repo) in the default browser.
 #
-#   dothelp         serve docs/ on localhost and open it
+#   dothelp         build the page from keymaps.toml, serve docs/ and open it
+#   dothelp check   check keymaps.toml against the configs (see docs/keymaps.py)
 #   dothelp stop    stop the server
 #
 # The server keeps running in the background, so the next `dothelp` only opens
@@ -14,7 +15,7 @@ pidfile="${XDG_RUNTIME_DIR:-/tmp}/dothelp-$port.pid"
 # ~/.local/bin/dothelp is a Stow symlink into the repo, so resolve it to find
 # docs/ wherever the repo was cloned.
 self=$(readlink -f "$0")
-site="$(dirname "$self")/../../../docs"
+site=$(readlink -f "$(dirname "$self")/../../../docs")
 
 has() { command -v "$1" >/dev/null 2>&1; }
 is_wsl() {
@@ -50,9 +51,12 @@ case "${1:-}" in
         rm -f "$pidfile"
         exit 0
         ;;
+    check)
+        exec python3 "$site/keymaps.py" check
+        ;;
     "") ;;
     *)
-        echo "usage: dothelp [stop]" >&2
+        echo "usage: dothelp [check|stop]" >&2
         exit 2
         ;;
 esac
@@ -62,14 +66,19 @@ if [ ! -f "$site/index.html" ]; then
     exit 1
 fi
 
+if ! has python3; then
+    echo "dothelp: python3 is needed to build and serve the cheatsheet" >&2
+    exit 1
+fi
+
+# Rebuilt on every run, so the page always shows the current keymaps.toml;
+# a running server just serves the new file.
+python3 "$site/keymaps.py" build || exit 1
+
 if ! running; then
-    if ! has python3; then
-        echo "dothelp: python3 is needed to serve the cheatsheet" >&2
-        exit 1
-    fi
-    # 127.0.0.1 only: the page is not offered to the network.
-    nohup python3 -m http.server "$port" --bind 127.0.0.1 --directory "$site" \
-        >/dev/null 2>&1 &
+    # 127.0.0.1 only: the page is not offered to the network. The server sends
+    # Cache-Control: no-cache, so an open tab never keeps an old app.js.
+    nohup python3 "$site/keymaps.py" serve "$port" >/dev/null 2>&1 &
     echo $! > "$pidfile"
     # Give it a moment; a dead process here means the port was taken.
     sleep 0.3

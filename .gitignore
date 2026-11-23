@@ -3,3 +3,6 @@ tmux/.config/tmux/plugins/
 
 # Machine-specific sway config (outputs/inputs), kept local
 sway/.config/sway/config.d/
+
+# Built by `dothelp` from keymaps.toml
+docs/keymaps.json

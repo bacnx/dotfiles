@@ -1,0 +1,50 @@
+#!/bin/sh
+# Keep keymaps.toml (the cheatsheet's source) in step with the configs.
+#
+# 1. A commit whose staged diff adds or removes a key binding line in a config
+#    must stage keymaps.toml too.
+# 2. When keymaps.toml or the nvim config is staged, `docs/keymaps.py check`
+#    validates the file and lists nvim leader maps it does not have.
+#
+# Enabled per clone with: git config core.hooksPath .githooks
+# Skip once (a binding that does not belong on the cheatsheet): git commit --no-verify
+
+staged=$(git diff --cached --name-only --diff-filter=ACMRD)
+[ -n "$staged" ] || exit 0
+
+# Pattern for binding lines, by config file.
+pattern_for() {
+    case "$1" in
+        nvim/*.lua) echo 'keymap\.set|\<b?map\(|<leader>|<localleader>|^\s*keys\s*=' ;;
+        tmux/.config/tmux/tmux.conf) echo '^\s*(bind|bind-key|unbind|unbind-key)\>|\<prefix\>' ;;
+        zsh/*) echo '\<bindkey\>|^\s*alias\>' ;;
+        sway/.config/sway/config) echo '^\s*(bindsym|bindcode|mode)\>' ;;
+        lazygit/.config/lazygit/config.yml) echo '^\s*-?\s*key:|keybinding' ;;
+    esac
+}
+
+changed=""
+for f in $staged; do
+    pat=$(pattern_for "$f")
+    [ -n "$pat" ] || continue
+    # +/- lines of the staged diff, without the +++/--- file headers.
+    if git diff --cached -U0 -- "$f" | grep -E '^[+-]' | grep -vE '^(\+\+\+|---) ' |
+        cut -c2- | grep -qE "$pat"; then
+        changed="$changed  $f
+"
+    fi
+done
+
+if [ -n "$changed" ] && ! echo "$staged" | grep -qx 'keymaps.toml'; then
+    printf 'pre-commit: these files change key bindings, but keymaps.toml is not staged:\n%s' "$changed" >&2
+    echo 'Update keymaps.toml (the dothelp cheatsheet) and stage it, or commit with --no-verify if the change does not belong there.' >&2
+    exit 1
+fi
+
+if echo "$staged" | grep -qE '^(keymaps\.toml|nvim/)'; then
+    python3 docs/keymaps.py check || {
+        echo 'pre-commit: fix keymaps.toml, or commit with --no-verify.' >&2
+        exit 1
+    }
+fi
+exit 0
