@@ -49,6 +49,22 @@ map("n", "<leader><leader>", "<cmd>b#<CR>")
 map("n", "<leader>c", "<cmd>bdelete<CR>")
 map("n", "<leader>C", "<cmd>%bdelete<CR>")
 
+-- Copy the current file's path to the system clipboard (+ register).
+-- `%:.` is relative to cwd (falls back to absolute outside it); `%:p` is absolute.
+local function copy_path(modifier)
+  return function()
+    local path = vim.fn.expand(modifier)
+    if path == "" then
+      vim.notify("Buffer has no file", vim.log.levels.WARN)
+      return
+    end
+    vim.fn.setreg("+", path)
+    vim.notify("Copied: " .. path)
+  end
+end
+map("n", "<leader>yf", copy_path("%:."), { desc = "Copy file path (relative)" })
+map("n", "<leader>yF", copy_path("%:p"), { desc = "Copy file path (absolute)" })
+
 -- Diagnostic keymaps
 -- vim.diagnostic.jump requires an opts table with `count`; passing the bare
 -- function errors instead of jumping.
