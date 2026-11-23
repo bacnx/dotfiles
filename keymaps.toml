@@ -289,31 +289,69 @@ rows = [
 ]
 
 [[group.card]]
-id = "sway"
-title = "Sway"
+id = "sway-apps"
+title = "Sway: apps and session"
 sub = "Mod is the Super (Windows) key."
 rows = [
   { keys = "Mod Return", desc = "Open a terminal (alacritty)" },
   { keys = "Mod d | Mod Space", desc = "App launcher (fuzzel)" },
   { keys = "Mod q", desc = "Close the window" },
+  { keys = "Mod S-e", desc = "Power menu", note = "Lock, logout, suspend, reboot, shutdown" },
+  { keys = "Mod S-l", desc = "Lock the screen", note = "Also locks by itself after 10 min and before sleep" },
+  { keys = "Mod S-c", desc = "Reload the config" },
+  { keys = "Mod n", desc = "Dismiss a notification" },
+  { keys = "Mod S-n", desc = "Dismiss all notifications" },
+]
+
+[[group.card]]
+id = "sway-windows"
+title = "Sway: windows"
+rows = [
   { keys = "Mod Left | Down | Up | Right", desc = "Focus the window in that direction" },
   { keys = "Mod S-Left | S-Down | S-Up | S-Right", desc = "Move the window in that direction" },
-  { keys = "Mod 1 … 9 | Mod 0", desc = "Go to workspace 1 … 10" },
-  { keys = "Mod S-1 … 9 | Mod S-0", desc = "Move the window to workspace 1 … 10" },
-  { keys = "Mod Tab", desc = "Back to the previous workspace" },
-  { keys = "Mod b | Mod v", desc = "Next window opens to the right / below" },
-  { keys = "Mod s | Mod w | Mod e", desc = "Layout: stacking / tabbed / toggle split" },
-  { keys = "Mod f", desc = "Fullscreen" },
-  { keys = "Mod S-Space", desc = "Float the window, or tile it again" },
   { keys = "Mod a", desc = "Focus the parent container" },
-  { keys = "Mod S-minus | Mod minus", desc = "Send to / show the scratchpad" },
-  { keys = "Mod r", desc = "Resize mode", note = "Arrows resize by 20px; Enter or Esc leaves" },
-  { keys = "Print | S-Print", desc = "Screenshot a region / the whole screen" },
-  { keys = "Mod n | Mod S-n", desc = "Dismiss the notification / all of them" },
-  { keys = "Mod S-l", desc = "Lock the screen" },
-  { keys = "Mod S-c", desc = "Reload the config" },
-  { keys = "Mod S-e", desc = "Power menu", note = "Lock, logout, suspend, reboot, shutdown" },
-  { keys = "Volume | Mute | Play | Next | Prev", desc = "Media keys work, also on the lock screen" },
+  { keys = "Mod S-Space", desc = "Float the window, or tile it again" },
+  { keys = "Mod drag", desc = "Move a floating window", note = "Right-drag resizes it" },
+  { keys = "Mod f", desc = "Fullscreen", note = "The screen won't lock while fullscreen" },
+  { keys = "Mod S-minus", desc = "Send the window to the scratchpad" },
+  { keys = "Mod minus", desc = "Show / hide the scratchpad" },
+]
+
+[[group.card]]
+id = "sway-layout"
+title = "Sway: layout and resize"
+rows = [
+  { keys = "Mod b", desc = "Next window opens to the right" },
+  { keys = "Mod v", desc = "Next window opens below" },
+  { keys = "Mod s", desc = "Stacking layout" },
+  { keys = "Mod w", desc = "Tabbed layout" },
+  { keys = "Mod e", desc = "Back to split, or flip its direction" },
+  { keys = "Mod r", desc = "Enter resize mode" },
+  { keys = "Left | Right", desc = "Narrower / wider by 20px", mode = "resize" },
+  { keys = "Up | Down", desc = "Shorter / taller by 20px", mode = "resize" },
+  { keys = "Return | Esc", desc = "Leave resize mode", mode = "resize" },
+]
+
+[[group.card]]
+id = "sway-workspaces"
+title = "Sway: workspaces"
+rows = [
+  { keys = "Mod 1 … 9 | Mod 0", desc = "Go to workspace 1 … 9 / 10" },
+  { keys = "Mod S-1 … 9 | Mod S-0", desc = "Move the window to workspace 1 … 9 / 10" },
+  { keys = "Mod Tab", desc = "Back to the previous workspace" },
+]
+
+[[group.card]]
+id = "sway-media"
+title = "Sway: screenshots and media"
+sub = "Media keys work on the lock screen too."
+rows = [
+  { keys = "Print", desc = "Screenshot a region", note = "Saved to ~/Pictures/Screenshots and copied" },
+  { keys = "S-Print", desc = "Screenshot the whole screen" },
+  { keys = "Esc", desc = "Cancel the region pick" },
+  { keys = "VolUp | VolDown", desc = "Volume up / down by 5%", note = "Capped at 100%" },
+  { keys = "Mute | MicMute", desc = "Mute speakers / microphone" },
+  { keys = "Play | Next | Prev", desc = "Media play-pause / next / previous", note = "playerctl" },
 ]
 
 [[group.card]]
