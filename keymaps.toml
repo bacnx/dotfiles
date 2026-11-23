@@ -312,7 +312,7 @@ rows = [
   { keys = "Mod n | Mod S-n", desc = "Dismiss the notification / all of them" },
   { keys = "Mod S-l", desc = "Lock the screen" },
   { keys = "Mod S-c", desc = "Reload the config" },
-  { keys = "Mod S-e", desc = "Exit sway", note = "Asks first" },
+  { keys = "Mod S-e", desc = "Power menu", note = "Lock, logout, suspend, reboot, shutdown" },
   { keys = "Volume | Mute | Play | Next | Prev", desc = "Media keys work, also on the lock screen" },
 ]
 
