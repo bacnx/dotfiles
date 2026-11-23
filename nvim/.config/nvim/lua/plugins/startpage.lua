@@ -309,7 +309,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
     if vim.fn.argc() == 0 then
       open_startpage()
     elseif vim.fn.argc() == 1 and vim.fn.isdirectory(vim.fn.argv(0)) == 1 then
-      -- `nvim <dir>` (television's atlas-repos runs `nvim .`): start in that dir
+      -- `nvim <dir>` (e.g. `v .` from a repo): start in that dir
       -- on the start page. file_browser's netrw hijack only fires after
       -- VimEnter, and by then the current buffer is no longer the directory.
       local dir_buf = vim.api.nvim_get_current_buf()
