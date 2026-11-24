@@ -45,7 +45,7 @@ cd ~/.dotfiles
 # Stow links a whole folder when it doesn't exist yet. These folders get files
 # written by other programs, so create them first and Stow links only our files.
 mkdir -p ~/.config/herdr ~/.config/lazygit ~/.local/bin ~/.config/systemd/user
-stow zsh commitizen bin nvim tmux git bat lazygit herdr starship
+stow zsh commitizen bin nvim tmux git bat lazygit herdr starship claude
 # Sway desktop (native Linux only)
 stow sway waybar fuzzel mako swaylock alacritty
 ```
@@ -58,6 +58,12 @@ Notes on what the packages link:
 
 - `herdr` links only `config.toml`: herdr writes logs, sockets and session
   state into `~/.config/herdr`.
+- `claude` links only `~/.claude/statusline.sh` (model, context, session and weekly
+  limits); Claude Code keeps its own state in `~/.claude`. Turn it on in the
+  untracked `~/.claude/settings.json`:
+  ```json
+  "statusLine": { "type": "command", "command": "~/.claude/statusline.sh" }
+  ```
 - `git` holds the shared settings and the catppuccin delta theme. Git reads
   `~/.config/git/config` before `~/.gitconfig`, so keep machine-only settings
   (`[user]`, employer `[url]` rewrites, `includeIf` identities) in an untracked
