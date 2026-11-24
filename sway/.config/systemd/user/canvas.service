@@ -1,0 +1,15 @@
+# Keeps canvas workspaces (sway/scripts/canvas, $mod+g) fitted to their
+# windows: refits the side gaps as windows open, close and move.
+
+[Unit]
+Description=Refit sway canvas gaps as windows change
+PartOf=sway-session.target
+After=sway-session.target
+
+[Service]
+ExecStart=%h/.config/sway/scripts/canvas watch
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=sway-session.target

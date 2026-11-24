@@ -330,7 +330,7 @@ rows = [
   { keys = "Left | Right", desc = "Narrower / wider by 20px", mode = "resize" },
   { keys = "Up | Down", desc = "Shorter / taller by 20px", mode = "resize" },
   { keys = "Return | Esc", desc = "Leave resize mode", mode = "resize" },
-  { keys = "Mod g", desc = "Canvas: wide gaps around this workspace's windows, or back", note = "Per workspace; shows the wallpaper around the windows" },
+  { keys = "Mod g", desc = "Canvas: wide gaps around this workspace's windows, or back", note = "Per workspace; side-by-side windows get more of the width, refitted as windows come and go" },
 ]
 
 [[group.card]]

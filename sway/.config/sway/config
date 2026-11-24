@@ -175,7 +175,7 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Canvas: wide gaps around this workspace's windows, wallpaper all around
-bindsym $mod+g exec ~/.config/sway/scripts/canvas
+bindsym $mod+g exec ~/.config/sway/scripts/canvas toggle
 
 # Screenshots: Print = region, Shift+Print = whole screen
 bindsym Print       exec $shot region
