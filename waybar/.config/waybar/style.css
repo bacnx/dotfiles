@@ -46,6 +46,7 @@ tooltip label { color: @text; padding: 2px 4px; }
 
 /* Modules: no box, just even padding; a soft wash on hover. */
 #mode,
+#window,
 #clock,
 #cpu,
 #memory,
@@ -93,6 +94,7 @@ tooltip label { color: @text; padding: 2px 4px; }
 }
 
 #mode        { color: @crust; background: alpha(@peach, 0.85); font-weight: bold; }
+#window      { color: @subtext0; }
 #clock       { color: @lavender; font-weight: bold; }
 #cpu         { color: @blue; }
 #memory      { color: @green; }

@@ -6,7 +6,7 @@
     "spacing": 4,
 
     "modules-left":   ["custom/network", "custom/vpn"],
-    "modules-center": ["sway/workspaces", "sway/mode"],
+    "modules-center": ["sway/workspaces", "sway/mode", "sway/window"],
     "modules-right":  ["cpu", "memory", "temperature", "pulseaudio", "tray", "clock"],
 
     "sway/workspaces": {
@@ -17,6 +17,14 @@
 
     "sway/mode": {
         "format": "󰩨 {}"
+    },
+
+    // Title of the focused window; hidden on an empty workspace.
+    "sway/window": {
+        "format": "{title}",
+        "max-length": 70,
+        "icon": false,
+        "tooltip": false
     },
 
     "clock": {
