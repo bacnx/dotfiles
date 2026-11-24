@@ -280,6 +280,17 @@ if (( $+commands[starship] )); then
     RPROMPT=''
 fi
 
+# Terminal title (OSC 2): the directory at the prompt, the command line while one
+# runs. Inside tmux this sets the pane title (#T), which set-titles-string passes
+# on to alacritty. The precmd half also clears whatever title the last program
+# left behind -- Claude's status, nvim's file name -- once the prompt is back.
+# (V) shows control characters as ^X so a pasted escape cannot reach the terminal.
+autoload -Uz add-zsh-hook
+_title_precmd()  { print -Pn '\e]2;%~\a' }
+_title_preexec() { print -rn -- $'\e]2;'"${(V)1[1,60]}"$'\a' }
+add-zsh-hook precmd  _title_precmd
+add-zsh-hook preexec _title_preexec
+
 # ─────────────────────────────────────────────────────────────
 # Plugins — distro paths differ, so probe both.
 # zsh-syntax-highlighting must be sourced last.

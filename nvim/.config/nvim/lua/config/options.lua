@@ -103,6 +103,11 @@ opt.showcmdloc = "statusline"
 require("vim._core.ui2").enable({ msg = { targets = "msg" } })
 opt.showtabline = 0 -- never show the tabline; tabs still work via gt / gT
 
+-- Terminal title: "nvim  options.lua", with " +" while unsaved. Inside tmux it
+-- becomes the pane title, which tmux's set-titles-string hands to alacritty.
+opt.title = true
+opt.titlestring = "nvim  %t%( %M%)"
+
 opt.undofile = true
 opt.swapfile = false
 opt.backup = false
