@@ -7,7 +7,7 @@
 
     "modules-left":   ["sway/workspaces", "sway/mode", "sway/window"],
     "modules-center": ["custom/network", "custom/vpn"],
-    "modules-right":  ["cpu", "memory", "temperature", "pulseaudio", "tray", "clock"],
+    "modules-right":  ["tray", "cpu", "memory", "temperature", "pulseaudio", "clock"],
 
     "sway/workspaces": {
         "disable-scroll": true,
