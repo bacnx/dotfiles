@@ -105,7 +105,23 @@ tooltip label { color: @text; padding: 2px 4px; }
 #custom-network.linked       { color: @yellow; }
 #custom-network.disconnected { color: @red; }
 #custom-vpn                  { color: @green; }
-#tray        { padding: 0 8px; }
+/* Tray drawer: a mauve arrow; the revealed icons sit in a soft surface capsule. */
+#custom-tray-arrow {
+    color: @mauve;
+    padding: 0 8px;
+    margin: 4px 0;
+    border-radius: 8px;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+#custom-tray-arrow:hover {
+    background: alpha(@mauve, 0.15);
+    color: @lavender;
+}
+#tray {
+    padding: 0 8px;
+    margin: 5px 4px;
+    background: alpha(@surface0, 0.6);
+}
 #tray > .needs-attention { background: alpha(@red, 0.6); border-radius: 6px; }
 
 #cpu.warning, #memory.warning        { color: @yellow; }

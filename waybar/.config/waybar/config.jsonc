@@ -7,7 +7,7 @@
 
     "modules-left":   ["sway/workspaces", "sway/mode", "sway/window"],
     "modules-center": ["custom/network", "custom/vpn"],
-    "modules-right":  ["tray", "cpu", "memory", "temperature", "pulseaudio", "clock"],
+    "modules-right":  ["group/systray", "cpu", "memory", "temperature", "pulseaudio", "clock"],
 
     "sway/workspaces": {
         "disable-scroll": true,
@@ -98,6 +98,24 @@
         "signal": 8,
         "on-click": "~/.config/waybar/scripts/network.sh toggle",
         "on-click-right": "nm-connection-editor"
+    },
+
+    // Tray icons folded behind an arrow: click the arrow to show them (they
+    // slide out to its left), click again to hide. Starts folded.
+    "group/systray": {
+        "orientation": "inherit",
+        "drawer": {
+            "click-to-reveal": true,
+            "transition-duration": 300,
+            "transition-left-to-right": false,
+            "children-class": "systray-child"
+        },
+        "modules": ["custom/tray-arrow", "tray"]
+    },
+
+    "custom/tray-arrow": {
+        "format": "󰅁",
+        "tooltip": false
     },
 
     "tray": {
