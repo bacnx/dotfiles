@@ -2,11 +2,8 @@
 {
     "layer": "top",
     "position": "top",
-    "height": 32,
-    "spacing": 6,
-    "margin-top": 6,
-    "margin-left": 8,
-    "margin-right": 8,
+    "height": 34,
+    "spacing": 4,
 
     "modules-left":   ["custom/network", "custom/vpn"],
     "modules-center": ["sway/workspaces", "sway/mode"],
@@ -71,7 +68,7 @@
     },
 
     // Physical card in use: with wifi and LAN both up, only the one carrying the
-    // default route (lowest metric) is shown. VPN tunnels get their own pill so
+    // default route (lowest metric) is shown. VPN tunnels get their own module so
     // split-tunnel setups show the real uplink and every tunnel side by side.
     "custom/network": {
         "exec": "~/.config/waybar/scripts/network.sh phys",

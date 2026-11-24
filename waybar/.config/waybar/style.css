@@ -1,4 +1,6 @@
-/* Waybar — Catppuccin Mocha */
+/* Waybar — Catppuccin Mocha, one full-width frosted bar.
+   The bar is semi-transparent; on SwayFX the compositor blurs what is behind
+   it (sway/.config/sway/swayfx.conf), on plain sway it is just see-through. */
 @define-color base     #1e1e2e;
 @define-color mantle   #181825;
 @define-color crust    #11111b;
@@ -25,20 +27,24 @@
     border-radius: 0;
 }
 
+/* The bar: one glass strip across the whole top edge. */
 window#waybar {
-    background: transparent;
+    background: alpha(@base, 0.65);
     color: @text;
 }
 
 tooltip {
-    background: @mantle;
-    border: 1px solid @surface1;
+    background: alpha(@mantle, 0.92);
+    border: 1px solid alpha(@text, 0.08);
     border-radius: 10px;
 }
-tooltip label { color: @text; }
+tooltip label { color: @text; padding: 2px 4px; }
 
-/* Each group is a rounded "pill" on the transparent bar. */
-#workspaces,
+/* Room at both ends of the bar. */
+.modules-left  { padding-left: 6px; }
+.modules-right { padding-right: 6px; }
+
+/* Modules: no box, just even padding; a soft wash on hover. */
 #mode,
 #clock,
 #cpu,
@@ -48,37 +54,45 @@ tooltip label { color: @text; }
 #custom-network,
 #custom-vpn,
 #tray {
-    background: @base;
-    border: 1px solid @surface0;
-    border-radius: 10px;
-    padding: 0 12px;
-    margin: 0;
+    background: transparent;
+    padding: 0 10px;
+    margin: 4px 0;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+#clock:hover,
+#pulseaudio:hover,
+#custom-network:hover,
+#custom-vpn:hover {
+    background: alpha(@text, 0.08);
 }
 
-#workspaces { padding: 0 4px; }
+/* Workspaces: dim numbers, the focused one in a mauve capsule. */
+#workspaces { padding: 0; }
 #workspaces button {
     color: @overlay0;
     background: transparent;
-    padding: 0 8px;
-    margin: 4px 1px;
-    border-radius: 7px;
+    padding: 0 9px;
+    margin: 5px 2px;
+    border-radius: 8px;
     transition: all 0.2s ease;
 }
 #workspaces button:hover {
-    background: @surface0;
+    background: alpha(@text, 0.08);
     color: @text;
     box-shadow: none;
 }
 #workspaces button.focused {
-    background: @mauve;
+    background: alpha(@mauve, 0.85);
     color: @crust;
+    font-weight: bold;
 }
 #workspaces button.urgent {
-    background: @peach;
+    background: alpha(@peach, 0.85);
     color: @crust;
 }
 
-#mode        { color: @crust; background: @peach; border-color: @peach; }
+#mode        { color: @crust; background: alpha(@peach, 0.85); font-weight: bold; }
 #clock       { color: @lavender; font-weight: bold; }
 #cpu         { color: @blue; }
 #memory      { color: @green; }
@@ -89,8 +103,8 @@ tooltip label { color: @text; }
 #custom-network.linked       { color: @yellow; }
 #custom-network.disconnected { color: @red; }
 #custom-vpn                  { color: @green; }
-#tray        { padding: 0 10px; }
-#tray > .needs-attention { background: @red; border-radius: 6px; }
+#tray        { padding: 0 8px; }
+#tray > .needs-attention { background: alpha(@red, 0.6); border-radius: 6px; }
 
 #cpu.warning, #memory.warning        { color: @yellow; }
 #cpu.critical, #memory.critical,
