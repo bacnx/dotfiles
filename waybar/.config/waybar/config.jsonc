@@ -85,7 +85,7 @@
         "on-click": "nm-connection-editor"
     },
 
-    // Every VPN that is up, with its IP; the tooltip lists the routed subnets.
+    // Every VPN that is up, by name; the tooltip has its IP and routed subnets.
     // Hidden when no tunnel is up.
     "custom/vpn": {
         "exec": "~/.config/waybar/scripts/network.sh vpn",

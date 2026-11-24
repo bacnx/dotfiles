@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 # Waybar network modules (custom, return-type json).
 #
-#   network.sh phys   the physical card carrying traffic now. With wifi and LAN
-#                     both up, that is the one whose default route has the
-#                     lowest metric; the other is ignored.
-#   network.sh vpn    every VPN tunnel that is up, with its IP. The tooltip
-#                     lists the subnets each one routes, for split tunnels.
+#   network.sh phys   the physical card carrying traffic now, as an icon and
+#                     its connection (SSID, or NM connection name). With wifi
+#                     and LAN both up, that is the one whose default route has
+#                     the lowest metric; the other is ignored. IP, gateway and
+#                     rates are in the tooltip.
+#   network.sh vpn    every VPN tunnel that is up, by connection name. The
+#                     tooltip has its IP and lists the subnets it routes.
 #                     Prints nothing (module hidden) when no tunnel is up.
 set -u
 
@@ -84,10 +86,9 @@ phys() {
         return
     fi
 
-    local addr ip down up
+    local addr down up
     addr=$(ipv4_of "$active")
-    ip=${addr%/*}
-    [[ -z $ip ]] && ip="no IPv4"
+    [[ -z $addr ]] && addr="none"
     read -r down_n down_u up_n up_u <<<"$(rates "$active")"
     down="$down_n $down_u" up="$up_n $up_u"
     local gw
@@ -103,7 +104,7 @@ phys() {
         ((pct < 0)) && pct=0
         local icons=(󰤟 󰤢 󰤥 󰤨)
         icon=${icons[$((pct >= 100 ? 3 : pct / 25))]}
-        emit "$icon  $(esc "$ip")" \
+        emit "$icon  $(esc "${ssid:-$active}")" \
             "$(esc "$ssid") ($pct%)  ·  $active
 IP       $addr
 Gateway  $gw
@@ -112,8 +113,10 @@ Gateway  $gw
         local speed
         speed=$(cat "/sys/class/net/$active/speed" 2>/dev/null)
         [[ -n $speed && $speed -gt 0 ]] && speed="$speed Mb/s" || speed="?"
-        emit "󰈀  $ip" \
-            "$(esc "$(conn_name "$active")")  ·  $active ($speed)
+        local name
+        name=$(conn_name "$active")
+        emit "󰈀  $(esc "${name:-$active}")" \
+            "$(esc "$name")  ·  $active ($speed)
 IP       $addr
 Gateway  $gw
 󰇚 $down   󰕒 $up" ethernet
@@ -135,8 +138,10 @@ vpn() {
         addr=$(ipv4_of "$ifn")
         [[ -z $addr ]] && continue
         name=$(conn_name "$ifn")
-        [[ -z $name || $name == "$ifn" ]] && name=$ifn
-        parts+=("$(esc "$name") ${addr%/*}")
+        # NM names a tun device's own connection after the device; a device
+        # named "tun-<vpn>" (OpenVPN dev=tun-<vpn>) is shown as "<vpn>".
+        [[ -z $name || $name == "$ifn" ]] && name=${ifn#tun-}
+        parts+=("$(esc "$name")")
         routes=$(ip -4 route show dev "$ifn" 2>/dev/null |
             awk '$1 != "default" && $0 !~ /proto kernel/ { print "  " $1 }' | head -n 12)
         ip -4 route show default dev "$ifn" 2>/dev/null | grep -q . && routes="  default (full tunnel)
