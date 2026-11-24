@@ -32,6 +32,9 @@ set $power ~/.config/sway/scripts/powermenu
 # ── Output ──────────────────────────────────────────────────────────────────
 # Solid colour until scripts/wallpaper (wallpaper.service) sets today's image.
 output * bg $base solid_color
+# A reload re-applies the line above, so set the image again. At login the
+# session target isn't up yet; starting it (see Autostart) runs the service.
+exec_always systemctl --user is-active -q sway-session.target && systemctl --user start wallpaper.service
 # Per-machine outputs/inputs live in config.d/ (untracked, see end of file).
 
 # ── Input ───────────────────────────────────────────────────────────────────
