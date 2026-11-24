@@ -64,6 +64,15 @@ Notes on what the packages link:
   ```json
   "statusLine": { "type": "command", "command": "~/.claude/statusline.sh" }
   ```
+- `sway` sets a different wallpaper each day: `scripts/wallpaper` picks one
+  image per date from `~/Pictures/wallpapers` (at login and after midnight,
+  via `wallpaper.service`/`.timer`). The images are not in this repo; a
+  suggested set (about 1.7 GB):
+  ```sh
+  git clone --depth 1 https://github.com/harilvfs/wallpapers ~/Pictures/wallpapers
+  systemctl --user enable wallpaper.service wallpaper.timer
+  ```
+  Without the folder sway keeps its solid background colour.
 - `git` holds the shared settings and the catppuccin delta theme. Git reads
   `~/.config/git/config` before `~/.gitconfig`, so keep machine-only settings
   (`[user]`, employer `[url]` rewrites, `includeIf` identities) in an untracked

@@ -1,0 +1,34 @@
+#!/bin/sh
+# wallpaper — set today's wallpaper: one image per date, picked from a folder.
+#
+# The same date always gives the same image (all day, across logins); the
+# next day gives another. Run by wallpaper.service at login and by
+# wallpaper.timer after midnight (both part of sway-session.target).
+#
+# Images come from $WALLPAPER_DIR (default ~/Pictures/wallpapers), searched
+# recursively, hidden folders (.thumbnails, .git) skipped. Suggested source:
+#   git clone --depth 1 https://github.com/harilvfs/wallpapers ~/Pictures/wallpapers
+# No folder or no images: sway keeps the solid colour from its config.
+#
+#   wallpaper            set today's image
+#   wallpaper 2026-12-25 set the image for another date (preview)
+set -eu
+
+dir=${WALLPAPER_DIR:-$HOME/Pictures/wallpapers}
+day=${1:-$(date +%F)}
+
+[ -d "$dir" ] || { echo "wallpaper: no folder $dir" >&2; exit 0; }
+
+# Sorted with LC_ALL=C so the list, and so each date's pick, is stable.
+list=$(find "$dir" -name '.*' -prune -o -type f \
+        \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.webp' \) \
+        -print | LC_ALL=C sort)
+count=$(printf '%s\n' "$list" | grep -c .) || { echo "wallpaper: no images in $dir" >&2; exit 0; }
+
+# Hash the date (YYYY-MM-DD) so consecutive days land far apart in the list.
+hash=$(printf '%s' "$day" | cksum | cut -d' ' -f1)
+file=$(printf '%s\n' "$list" | sed -n "$((hash % count + 1))p")
+
+echo "wallpaper: $day -> $file"
+# swaymsg needs SWAYSOCK; sway's config imports it into the systemd user manager.
+swaymsg -q "output * bg \"$file\" fill"

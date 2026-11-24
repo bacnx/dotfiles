@@ -1,0 +1,14 @@
+# Sets today's wallpaper (sway/scripts/wallpaper). Runs when the sway session
+# starts and whenever wallpaper.timer fires.
+
+[Unit]
+Description=Set today's sway wallpaper
+PartOf=sway-session.target
+After=sway-session.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/.config/sway/scripts/wallpaper
+
+[Install]
+WantedBy=sway-session.target

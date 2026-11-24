@@ -30,6 +30,7 @@ set $shot  ~/.config/sway/scripts/screenshot
 set $power ~/.config/sway/scripts/powermenu
 
 # ── Output ──────────────────────────────────────────────────────────────────
+# Solid colour until scripts/wallpaper (wallpaper.service) sets today's image.
 output * bg $base solid_color
 # Per-machine outputs/inputs live in config.d/ (untracked, see end of file).
 

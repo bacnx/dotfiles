@@ -1,0 +1,12 @@
+# Picks the next day's wallpaper just after midnight. A midnight passed during
+# suspend fires on resume.
+
+[Unit]
+Description=Change the sway wallpaper at midnight
+PartOf=sway-session.target
+
+[Timer]
+OnCalendar=*-*-* 00:00:05
+
+[Install]
+WantedBy=sway-session.target
