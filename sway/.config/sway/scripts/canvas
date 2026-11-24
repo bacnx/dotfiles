@@ -17,7 +17,7 @@ outer=2
 # Canvas gaps. Top/bottom is fixed; left/right by columns: 1, 2, 3 or more.
 canvas_inner=16
 canvas_y=90
-canvas_x_1=280
+canvas_x_1=360
 canvas_x_2=160
 canvas_x_3=60
 
