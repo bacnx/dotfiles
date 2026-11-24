@@ -49,6 +49,7 @@ font pango:JetBrainsMono Nerd Font 10
 default_border pixel 2
 default_floating_border pixel 2
 hide_edge_borders --i3 none
+# Keep in step with scripts/canvas, which restores these on $mod+g.
 gaps inner 6
 gaps outer 2
 smart_gaps off
@@ -172,6 +173,9 @@ mode "resize" {
     bindsym Escape mode "default"
 }
 bindsym $mod+r mode "resize"
+
+# Canvas: wide gaps around this workspace's windows, wallpaper all around
+bindsym $mod+g exec ~/.config/sway/scripts/canvas
 
 # Screenshots: Print = region, Shift+Print = whole screen
 bindsym Print       exec $shot region

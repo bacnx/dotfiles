@@ -1,0 +1,29 @@
+#!/bin/sh
+# canvas — toggle a wide frame of gaps around the focused workspace, so the
+# windows sit in the middle with the wallpaper around them. Per workspace:
+# the others keep their own gaps. Bound to $mod+g.
+#
+# sway's IPC doesn't report a workspace's gaps, so read them from where the
+# workspace starts: with normal gaps its left edge is outer + inner (8px)
+# from the output's edge, with the canvas it is far more.
+set -eu
+
+# Normal gaps: keep in step with `gaps inner` / `gaps outer` in sway's config.
+inner=6
+outer=2
+# Canvas: wide sides, smaller top/bottom (the screen is wider than tall).
+canvas_inner=16
+canvas_x=280
+canvas_y=90
+
+ws=$(swaymsg -t get_workspaces -r | jq -c '.[] | select(.focused)')
+out=$(swaymsg -t get_outputs -r |
+    jq -c --arg o "$(printf '%s' "$ws" | jq -r .output)" '.[] | select(.name == $o)')
+left=$(( $(printf '%s' "$ws" | jq .rect.x) - $(printf '%s' "$out" | jq .rect.x) ))
+
+if [ "$left" -gt $(( (inner + outer + canvas_x) / 2 )) ]; then
+    swaymsg -q "gaps inner current set $inner; gaps outer current set $outer"
+else
+    swaymsg -q "gaps inner current set $canvas_inner; \
+        gaps horizontal current set $canvas_x; gaps vertical current set $canvas_y"
+fi
