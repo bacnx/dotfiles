@@ -1,0 +1,12 @@
+# Lives exactly as long as the sway session: sway starts it at login (see the
+# Autostart block in sway's config) and sway-session-watch.service stops it the
+# moment sway exits. Attach per-session user services to it with
+#   [Unit]    PartOf=sway-session.target
+#   [Install] WantedBy=sway-session.target
+# Unlike default.target this also works across logout/login while a tmux
+# server keeps the systemd user manager running.
+
+[Unit]
+Description=Sway session
+BindsTo=sway-session-watch.service
+After=sway-session-watch.service

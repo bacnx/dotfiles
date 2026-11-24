@@ -83,6 +83,8 @@ exec fcitx5 -d --replace
 exec nm-applet --indicator
 exec blueman-applet
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+# User services that should live only as long as this session.
+exec systemctl --user import-environment SWAYSOCK WAYLAND_DISPLAY && systemctl --user start sway-session.target
 
 # ── Bar ─────────────────────────────────────────────────────────────────────
 bar {

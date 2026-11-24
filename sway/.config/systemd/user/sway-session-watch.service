@@ -1,0 +1,11 @@
+# Returns when sway announces shutdown (or its IPC socket closes), which stops
+# sway-session.target and every unit that is PartOf it, while the login
+# session is still alive.
+
+[Unit]
+Description=Stop sway-session.target when sway exits
+PartOf=sway-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/swaymsg -t subscribe '["shutdown"]'

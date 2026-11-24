@@ -44,7 +44,7 @@ sudo apt install stow   # Arch: sudo pacman -S stow
 cd ~/.dotfiles
 # Stow links a whole folder when it doesn't exist yet. These folders get files
 # written by other programs, so create them first and Stow links only our files.
-mkdir -p ~/.config/herdr ~/.config/lazygit ~/.local/bin
+mkdir -p ~/.config/herdr ~/.config/lazygit ~/.local/bin ~/.config/systemd/user
 stow zsh commitizen bin nvim tmux git bat lazygit herdr starship
 # Sway desktop (native Linux only)
 stow sway waybar fuzzel mako swaylock alacritty
