@@ -108,3 +108,15 @@ opt.swapfile = false
 opt.backup = false
 
 opt.updatetime = 250
+
+-- auto-session (plugins/session.lua) needs localoptions so a restored buffer
+-- gets its filetype and highlighting back.
+opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
+-- No plugin here is written against the Node, Perl, Python or Ruby remote
+-- plugin hosts; turning them off skips probing for them at startup and in
+-- :checkhealth.
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_ruby_provider = 0

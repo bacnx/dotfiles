@@ -13,18 +13,12 @@ vim.api.nvim_create_autocmd('PackChanged', {
 
 -- ============================================================
 -- TREESITTER PARSERS
--- Install once with :TSInstall, then they persist
 -- ============================================================
--- Ensure these parsers are always installed
-require('nvim-treesitter').setup({
-  ensure_installed = { 'go', 'lua', 'javascript', 'sql' },
-  sync_install     = false,
-  auto_install     = false,
-
-  -- Disable built-in modules — we handle highlight/indent ourselves below
-  highlight        = { enable = false },
-  indent           = { enable = false },
-})
+-- nvim-treesitter's main branch takes no ensure_installed / highlight / indent
+-- options in setup(); install() is how to keep parsers present. It runs async
+-- and skips parsers already installed. Compiling needs tree-sitter-cli and a C
+-- compiler. yaml and html are for render-markdown (front matter, inline HTML).
+require('nvim-treesitter').install({ 'go', 'lua', 'javascript', 'sql', 'yaml', 'html' })
 
 -- ============================================================
 -- TREESITTER HIGHLIGHTING (your original config, slightly improved)
