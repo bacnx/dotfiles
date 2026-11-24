@@ -5,8 +5,8 @@
     "height": 34,
     "spacing": 4,
 
-    "modules-left":   ["custom/network", "custom/vpn"],
-    "modules-center": ["sway/workspaces", "sway/mode", "sway/window"],
+    "modules-left":   ["sway/workspaces", "sway/mode", "sway/window"],
+    "modules-center": ["custom/network", "custom/vpn"],
     "modules-right":  ["cpu", "memory", "temperature", "pulseaudio", "tray", "clock"],
 
     "sway/workspaces": {
