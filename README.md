@@ -58,12 +58,15 @@ Notes on what the packages link:
 
 - `herdr` links only `config.toml`: herdr writes logs, sockets and session
   state into `~/.config/herdr`.
-- `claude` links only `~/.claude/statusline.sh` (model, context, session and weekly
+- `claude` links `~/.claude/statusline.sh` (model, context, session and weekly
   limits); Claude Code keeps its own state in `~/.claude`. Turn it on in the
   untracked `~/.claude/settings.json`:
   ```json
   "statusLine": { "type": "command", "command": "~/.claude/statusline.sh" }
   ```
+  It also links `~/.claude/mods/`, Claude Code mods that `.zshrc` loads into
+  every session through `CLAUDE_CODE_PLUGIN_DIRS`. `diff-transparent` draws the
+  `/diff` panel on the terminal's own background instead of a painted one.
 - `sway` sets a different wallpaper each day: `scripts/wallpaper` picks one
   image per date from `~/Pictures/wallpapers` (at login and after midnight,
   via `wallpaper.service`/`.timer`). The images are not in this repo; a

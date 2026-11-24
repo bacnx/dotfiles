@@ -1,0 +1,1 @@
+{ "name": "diff-transparent", "version": "0.1.0", "description": "Draw the /diff panel on the terminal's own background instead of a painted one" }

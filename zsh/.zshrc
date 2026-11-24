@@ -158,6 +158,14 @@ elif (( $+commands[vim] )); then
     export EDITOR=vim
 fi
 
+# Claude Code mods from this repo (claude/.claude/mods, stowed to ~/.claude/mods):
+# each folder loads in every session started from this shell, read straight from
+# disk, so an edit reloads it with no reinstall. Separated by ":" like PATH.
+() {
+    local -a mods=(~/.claude/mods/*/.claude-plugin/plugin.json(N:h:h))
+    (( $#mods )) && export CLAUDE_CODE_PLUGIN_DIRS=${(j.:.)mods}
+}
+
 # ─────────────────────────────────────────────────────────────
 # Aliases
 # ─────────────────────────────────────────────────────────────

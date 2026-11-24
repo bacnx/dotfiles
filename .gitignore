@@ -6,3 +6,7 @@ sway/.config/sway/config.d/
 
 # Built by `dothelp` from keymaps.toml
 docs/keymaps.json
+
+# Claude Code writes type declarations into each mod it loads
+claude/.claude/mods/*/.claude-plugin/types/
+claude/.claude/mods/*/tsconfig.json
