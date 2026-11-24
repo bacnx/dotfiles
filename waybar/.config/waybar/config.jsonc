@@ -78,20 +78,26 @@
     // Physical card in use: with wifi and LAN both up, only the one carrying the
     // default route (lowest metric) is shown. VPN tunnels get their own module so
     // split-tunnel setups show the real uplink and every tunnel side by side.
+    // Compact (icon only) by default; left-click on either module toggles the
+    // IPs on both, right-click opens the connection editor.
     "custom/network": {
         "exec": "~/.config/waybar/scripts/network.sh phys",
         "return-type": "json",
         "interval": 5,
-        "on-click": "nm-connection-editor"
+        "signal": 8,
+        "on-click": "~/.config/waybar/scripts/network.sh toggle",
+        "on-click-right": "nm-connection-editor"
     },
 
-    // Every VPN that is up, with its IP; the tooltip lists the routed subnets.
-    // Hidden when no tunnel is up.
+    // Every VPN that is up, by name (and IP when toggled on); the tooltip has
+    // the IP and routed subnets. Hidden when no tunnel is up.
     "custom/vpn": {
         "exec": "~/.config/waybar/scripts/network.sh vpn",
         "return-type": "json",
         "interval": 5,
-        "on-click": "nm-connection-editor"
+        "signal": 8,
+        "on-click": "~/.config/waybar/scripts/network.sh toggle",
+        "on-click-right": "nm-connection-editor"
     },
 
     "tray": {

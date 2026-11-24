@@ -7,6 +7,8 @@
 #   network.sh vpn    every VPN tunnel that is up, with its IP. The tooltip
 #                     lists the subnets each one routes, for split tunnels.
 #                     Prints nothing (module hidden) when no tunnel is up.
+#   network.sh toggle  switch both modules between compact (icon, VPN name)
+#                     and showing the IPs, then refresh them (signal 8).
 set -u
 
 mode=${1:-phys}
@@ -14,6 +16,11 @@ state_dir="${XDG_RUNTIME_DIR:-/tmp}/waybar-network"
 mkdir -p "$state_dir"
 
 esc() { jq -Rr @html <<<"$1"; }
+
+# Compact unless the toggle file exists. Lives in $XDG_RUNTIME_DIR, so each
+# login starts compact.
+show_ip_flag="$state_dir/show-ip"
+show_ip() { [[ -e $show_ip_flag ]]; }
 
 emit() { # text tooltip class
     jq -cn --arg t "$1" --arg tt "$2" --arg c "$3" '{text:$t, tooltip:$tt, class:$c}'
@@ -103,7 +110,9 @@ phys() {
         ((pct < 0)) && pct=0
         local icons=(󰤟 󰤢 󰤥 󰤨)
         icon=${icons[$((pct >= 100 ? 3 : pct / 25))]}
-        emit "$icon  $(esc "$ip")" \
+        local text=$icon
+        show_ip && text="$icon  $(esc "$ip")"
+        emit "$text" \
             "$(esc "$ssid") ($pct%)  ·  $active
 IP       $addr
 Gateway  $gw
@@ -112,7 +121,9 @@ Gateway  $gw
         local speed
         speed=$(cat "/sys/class/net/$active/speed" 2>/dev/null)
         [[ -n $speed && $speed -gt 0 ]] && speed="$speed Mb/s" || speed="?"
-        emit "󰈀  $ip" \
+        local text=󰈀
+        show_ip && text="󰈀  $ip"
+        emit "$text" \
             "$(esc "$(conn_name "$active")")  ·  $active ($speed)
 IP       $addr
 Gateway  $gw
@@ -135,8 +146,14 @@ vpn() {
         addr=$(ipv4_of "$ifn")
         [[ -z $addr ]] && continue
         name=$(conn_name "$ifn")
-        [[ -z $name || $name == "$ifn" ]] && name=$ifn
-        parts+=("$(esc "$name") ${addr%/*}")
+        # NM names a tun device's own connection after the device; a device
+        # named "tun-<vpn>" (OpenVPN dev=tun-<vpn>) is shown as "<vpn>".
+        [[ -z $name || $name == "$ifn" ]] && name=${ifn#tun-}
+        if show_ip; then
+            parts+=("$(esc "$name") ${addr%/*}")
+        else
+            parts+=("$(esc "$name")")
+        fi
         routes=$(ip -4 route show dev "$ifn" 2>/dev/null |
             awk '$1 != "default" && $0 !~ /proto kernel/ { print "  " $1 }' | head -n 12)
         ip -4 route show default dev "$ifn" 2>/dev/null | grep -q . && routes="  default (full tunnel)
@@ -160,5 +177,9 @@ ${routes:-  (none in main table)}")
 case $mode in
     phys) phys ;;
     vpn) vpn ;;
-    *) echo "usage: $0 phys|vpn" >&2; exit 2 ;;
+    toggle)
+        if show_ip; then rm -f "$show_ip_flag"; else : >"$show_ip_flag"; fi
+        pkill -RTMIN+8 -x waybar
+        ;;
+    *) echo "usage: $0 phys|vpn|toggle" >&2; exit 2 ;;
 esac
