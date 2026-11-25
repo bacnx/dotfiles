@@ -3,7 +3,8 @@
 #
 #   network.sh phys   the physical card carrying traffic now. With wifi and LAN
 #                     both up, that is the one whose default route has the
-#                     lowest metric; the other is ignored.
+#                     lowest metric; the other is ignored. Hidden while no
+#                     VPN tunnel is up (then only offline / no IP show).
 #   network.sh vpn    every VPN tunnel that is up, with its IP. The tooltip
 #                     lists the subnets each one routes, for split tunnels.
 #                     Prints nothing (module hidden) when no tunnel is up.
@@ -78,6 +79,20 @@ vpn_conn_by_addr() {
         awk -F: '$NF == "vpn" { sub(/:[^:]*$/, ""); gsub(/\\:/, ":"); print }')
 }
 
+# VPN tunnel links that are not down and hold an IPv4 address, one per line.
+tunnels() {
+    local ifn
+    ip -j -d link show 2>/dev/null | jq -r '
+        .[] | select(.operstate != "DOWN")
+        | select((.linkinfo.info_kind // "") as $k
+                 | (["wireguard", "tun", "xfrm", "vti", "ipip", "gre", "ip6tnl"] | index($k))
+                   or .link_type == "ppp" or .link_type == "none")
+        | .ifname' |
+        while IFS= read -r ifn; do
+            [[ -n $(ipv4_of "$ifn") ]] && printf '%s\n' "$ifn"
+        done
+}
+
 phys() {
     # Real cards have a backing device in sysfs; tunnels, bridges, veth don't.
     local cards=() ifn
@@ -101,6 +116,13 @@ phys() {
             fi
         done
         emit "󰤮  offline" "No network card connected" disconnected
+        return
+    fi
+
+    # Online with no VPN: the card alone isn't worth a module. With a tunnel up
+    # it is shown, so the uplink sits next to the VPN module.
+    if [[ -z $(tunnels) ]]; then
+        echo '{"text":"","class":"none"}'
         return
     fi
 
@@ -145,14 +167,8 @@ Gateway  $gw
 }
 
 vpn() {
-    # Tunnel links that are not down and hold an IPv4 address.
     local tunnels
-    mapfile -t tunnels < <(ip -j -d link show 2>/dev/null | jq -r '
-        .[] | select(.operstate != "DOWN")
-        | select((.linkinfo.info_kind // "") as $k
-                 | (["wireguard", "tun", "xfrm", "vti", "ipip", "gre", "ip6tnl"] | index($k))
-                   or .link_type == "ppp" or .link_type == "none")
-        | .ifname')
+    mapfile -t tunnels < <(tunnels)
 
     local parts=() tips=() ifn addr name routes
     for ifn in "${tunnels[@]}"; do

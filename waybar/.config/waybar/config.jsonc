@@ -78,6 +78,7 @@
     // Physical card in use: with wifi and LAN both up, only the one carrying the
     // default route (lowest metric) is shown. VPN tunnels get their own module so
     // split-tunnel setups show the real uplink and every tunnel side by side.
+    // Hidden while no VPN is up, unless offline or without an IP.
     // Compact (icon only) by default; left-click on either module toggles the
     // IPs on both, right-click opens the connection editor.
     "custom/network": {
