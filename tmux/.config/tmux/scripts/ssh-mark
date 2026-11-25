@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Print "ssh" for the status bar when the tmux client drawing it is
+# attached over SSH; print nothing otherwise.
+#
+#   ssh-mark <client_pid>
+#
+# Reads the client's own environment, not the session's: one session can be
+# attached locally and over SSH at once, and the session copy of SSH_CONNECTION
+# (update-environment) only reflects whichever client attached last. Nor can it
+# look for sshd among the ancestors: under WSL the SSH server runs on Windows,
+# and the Linux side only sees an /init relay.
+pid=$1
+[[ -r /proc/$pid/environ ]] || exit 0
+tr '\0' '\n' < "/proc/$pid/environ" | grep -q '^SSH_CONNECTION=' && printf 'ssh '
+exit 0
