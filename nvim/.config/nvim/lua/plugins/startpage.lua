@@ -303,10 +303,18 @@ end
 
 vim.api.nvim_create_autocmd("VimLeave", { callback = save_session })
 
+-- `cmd | nvim -` has no file arguments either (argc() is 0), but the piped text
+-- is the buffer to show, so the start page must not replace it.
+local reading_stdin = false
+vim.api.nvim_create_autocmd("StdinReadPre", {
+  once = true,
+  callback = function() reading_stdin = true end,
+})
+
 vim.api.nvim_create_autocmd("VimEnter", {
   once = true,
   callback = function()
-    if vim.fn.argc() == 0 then
+    if vim.fn.argc() == 0 and not reading_stdin then
       open_startpage()
     elseif vim.fn.argc() == 1 and vim.fn.isdirectory(vim.fn.argv(0)) == 1 then
       -- `nvim <dir>` (e.g. `v .` from a repo): start in that dir
