@@ -65,6 +65,19 @@ conn_name() {
         awk -F: -v d="$1" '$1 == d { sub(/^[^:]*:/, ""); print; exit }'
 }
 
+# The active NM VPN connection whose IPv4 address is "addr/cidr". A VPN whose
+# tunnel NM does not manage as a device (a pppd tunnel such as Fortinet's
+# ppp0) has no connection of its own, so match it by address instead.
+vpn_conn_by_addr() {
+    command -v nmcli >/dev/null || return
+    local name
+    while IFS= read -r name; do
+        nmcli -g IP4.ADDRESS connection show "$name" 2>/dev/null |
+            sed 's/ *| */\n/g' | grep -qxF "$1" && { printf '%s\n' "$name"; return; }
+    done < <(nmcli -t -f NAME,TYPE connection show --active 2>/dev/null |
+        awk -F: '$NF == "vpn" { sub(/:[^:]*$/, ""); gsub(/\\:/, ":"); print }')
+}
+
 phys() {
     # Real cards have a backing device in sysfs; tunnels, bridges, veth don't.
     local cards=() ifn
@@ -146,6 +159,7 @@ vpn() {
         addr=$(ipv4_of "$ifn")
         [[ -z $addr ]] && continue
         name=$(conn_name "$ifn")
+        [[ -z $name ]] && name=$(vpn_conn_by_addr "$addr")
         # NM names a tun device's own connection after the device; a device
         # named "tun-<vpn>" (OpenVPN dev=tun-<vpn>) is shown as "<vpn>".
         [[ -z $name || $name == "$ifn" ]] && name=${ifn#tun-}
