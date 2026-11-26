@@ -48,24 +48,25 @@ mr.refresh(function()
   end
 end)
 
-vim.lsp.handlers["textDocument/hover"] = function(err, result, ctx, config)
-  vim.lsp.handlers.hover(err, result, ctx, vim.tbl_extend("force", config or {}, {
-    border    = "rounded",
-    title     = " Documentation",
-    title_pos = "center",
-    max_width = 80,
+-- Float options go to vim.lsp.buf.hover/signature_help directly: since 0.11
+-- those no longer read vim.lsp.handlers[...], so overriding the handlers has no
+-- effect. The border comes from 'winborder' (config/options.lua).
+local function hover()
+  vim.lsp.buf.hover({
+    title      = " Documentation",
+    title_pos  = "center",
+    max_width  = 80,
     max_height = 20,
-    focusable = true,
-  }))
+    focusable  = true,
+  })
 end
 
-vim.lsp.handlers["textDocument/signatureHelp"] = function(err, result, ctx, config)
-  vim.lsp.handlers.signature_help(err, result, ctx, vim.tbl_extend("force", config or {}, {
-    border    = "rounded",
+local function signature_help()
+  vim.lsp.buf.signature_help({
     title     = " Signature",
     title_pos = "center",
     focusable = false,
-  }))
+  })
 end
 
 -- vim.lsp.buf records the tagstack entry only on its single-result path, and
@@ -110,8 +111,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
     local buf = args.buf
     -- Hover lives on K, not <C-k>: a buffer-local <C-k> would shadow the global
     -- TmuxNavigateUp mapping in every LSP-attached buffer.
-    vim.keymap.set("n", "K",        vim.lsp.buf.hover,           { buffer = buf, desc = "LSP hover" })
-    vim.keymap.set("i", "<M-s>",    vim.lsp.buf.signature_help,  { buffer = buf, desc = "LSP signature help" })
+    vim.keymap.set("n", "K",        hover,                       { buffer = buf, desc = "LSP hover" })
+    vim.keymap.set("i", "<M-s>",    signature_help,              { buffer = buf, desc = "LSP signature help" })
     -- These four use the vim API rather than telescope's LSP pickers. Those
     -- pickers run server results through defaults.file_ignore_patterns, where
     -- 'node_modules/' drops every hit in a dependency: gd reported "No LSP

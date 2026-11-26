@@ -1,4 +1,9 @@
 {
+  "runtime": {
+    "version": "LuaJIT",
+    "path": ["lua/?.lua", "lua/?/init.lua"],
+    "pathStrict": true
+  },
   "diagnostics": {
     "globals": ["vim"]
   },
@@ -6,4 +11,3 @@
     "library": ["$VIMRUNTIME/lua"]
   }
 }
-

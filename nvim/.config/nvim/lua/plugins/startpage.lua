@@ -314,14 +314,16 @@ vim.api.nvim_create_autocmd("StdinReadPre", {
 vim.api.nvim_create_autocmd("VimEnter", {
   once = true,
   callback = function()
+    -- argv(0) is typed string|string[] (the list form is argv() with no index)
+    local arg = vim.fn.argv(0) --[[@as string]]
     if vim.fn.argc() == 0 and not reading_stdin then
       open_startpage()
-    elseif vim.fn.argc() == 1 and vim.fn.isdirectory(vim.fn.argv(0)) == 1 then
+    elseif vim.fn.argc() == 1 and vim.fn.isdirectory(arg) == 1 then
       -- `nvim <dir>` (e.g. `v .` from a repo): start in that dir
       -- on the start page. file_browser's netrw hijack only fires after
       -- VimEnter, and by then the current buffer is no longer the directory.
       local dir_buf = vim.api.nvim_get_current_buf()
-      vim.fn.chdir(vim.fn.fnamemodify(vim.fn.argv(0), ":p"))
+      vim.fn.chdir(vim.fn.fnamemodify(arg, ":p"))
       open_startpage()
       if vim.api.nvim_buf_is_valid(dir_buf) then
         vim.api.nvim_buf_delete(dir_buf, { force = true })
