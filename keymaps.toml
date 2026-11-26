@@ -35,6 +35,7 @@ rows = [
   { keys = "y | p", desc = "Yank and paste use the system clipboard", mode = "n v", note = "Through bin/clip" },
   { keys = "L y f", desc = "Copy the file path, relative to cwd" },
   { keys = "L y F", desc = "Copy the absolute file path" },
+  { keys = "L y l", desc = "Copy path:line, relative to cwd", mode = "n v", note = "A selection copies path:first-last; handy for pointing Claude Code at code" },
 ]
 
 [[group.card]]

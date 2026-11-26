@@ -51,19 +51,39 @@ map("n", "<leader>C", "<cmd>%bdelete<CR>")
 
 -- Copy the current file's path to the system clipboard (+ register).
 -- `%:.` is relative to cwd (falls back to absolute outside it); `%:p` is absolute.
-local function copy_path(modifier)
+-- `with_line` appends the cursor line (`path:42`), or the selected range in
+-- visual mode (`path:10-20`), for pointing a Claude Code session at code.
+local function copy_path(modifier, with_line)
   return function()
     local path = vim.fn.expand(modifier)
     if path == "" then
       vim.notify("Buffer has no file", vim.log.levels.WARN)
       return
     end
+    local what = modifier == "%:p" and "absolute file path" or "relative file path"
+    if with_line then
+      local first, last = vim.fn.line("v"), vim.fn.line(".")
+      if first > last then
+        first, last = last, first
+      end
+      if first == last then
+        path = path .. ":" .. first
+        what = "file path and line " .. first
+      else
+        path = path .. ":" .. first .. "-" .. last
+        what = ("file path and lines %d-%d (%d lines)"):format(first, last, last - first + 1)
+      end
+      if vim.fn.mode():match("[vV\22]") then
+        vim.api.nvim_feedkeys(vim.keycode("<Esc>"), "n", false)
+      end
+    end
     vim.fn.setreg("+", path)
-    vim.notify("Copied: " .. path)
+    vim.notify(("Copied %s to clipboard:\n%s"):format(what, path), vim.log.levels.INFO)
   end
 end
 map("n", "<leader>yf", copy_path("%:."), { desc = "Copy file path (relative)" })
 map("n", "<leader>yF", copy_path("%:p"), { desc = "Copy file path (absolute)" })
+map({ "n", "x" }, "<leader>yl", copy_path("%:.", true), { desc = "Copy file path:line (relative)" })
 
 -- Diagnostic keymaps
 -- vim.diagnostic.jump requires an opts table with `count`; passing the bare
